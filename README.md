@@ -15,21 +15,21 @@ from artificially restricted independent round subkeys.
 
 | Variant | Python script | Distinguisher → filtering | Experimental key model |
 | --- | --- | --- | --- |
-| 128/128 | `Kalyna-128-128/kalyna128_128_3round_combined.py` | 2R → 3R | No weak-key restriction; genuine master keys |
-| 128/128 | `Kalyna-128-128/kalyna128_128_4round_combined.py` | 3R → 4R | Restricted pre-whitening round subkey; synthetic model |
-| 128/128 | `Kalyna-128-128/kalyna128_128_5round_combined.py` | 4R → 5R | No initial pre-whitening; restricted K(1); synthetic model |
-| 128/256 | `Kalyna-128-256/kalyna128_256_4round_combined.py` | 2R → 4R | No weak-key restriction; genuine master keys |
-| 128/256 | `Kalyna-128-256/kalyna128_256_5round_combined.py` | 3R → 5R | Restricted pre-whitening round subkey; synthetic model |
-| 128/256 | `Kalyna-128-256/kalyna128_256_6round_combined.py` | 4R → 6R | No initial pre-whitening; restricted K(1); synthetic model |
-| 256/256 | `Kalyna-256-256/kalyna256_256_3round_combined.py` | 2R → 3R | No weak-key restriction; genuine master keys |
-| 256/256 | `Kalyna-256-256/kalyna256_256_4round_combined.py` | 3R → 4R | Two active bytes; Kpw[24] = 0; restricted model |
-| 256/256 | `Kalyna-256-256/kalyna256_256_5round_combined.py` | 4R → 5R | Two active bytes; 16 zero Kpw bytes; restricted model |
-| 256/512 | `Kalyna-256-512/kalyna256_512_4round_combined.py` | 2R → 4R | No weak-key restriction; genuine master keys |
-| 256/512 | `Kalyna-256-512/kalyna256_512_5round_combined.py` | 3R → 5R | Two active bytes; **genuine conditioned master keys** with Kpw[24] = 0 |
-| 256/512 | `Kalyna-256-512/kalyna256_512_6round_combined.py` | 4R → 6R | Two active bytes; 16 zero Kpw bytes; restricted model |
-| 512/512 | `Kalyna-512-512/kalyna512_512_4round_combined.py` | 3R → 4R | No weak-key restriction; genuine master keys |
-| 512/512 | `Kalyna-512-512/kalyna512_512_5round_combined.py` | 4R → 5R | Eight zero Kpw bytes; restricted model |
-| 512/512 | `Kalyna-512-512/kalyna512_512_6round_combined.py` | 5R → 6R | No initial pre-whitening; eight zero K(1) bytes; restricted model |
+| 128/128 | `Kalyna_128-128/kalyna128_128_3round_combined.py` | 2R → 3R | No weak-key restriction; genuine master keys |
+| 128/128 | `Kalyna_128-128/kalyna128_128_4round_combined.py` | 3R → 4R | Restricted pre-whitening round subkey; synthetic model |
+| 128/128 | `Kalyna_128-128/kalyna128_128_5round_combined.py` | 4R → 5R | No initial pre-whitening; restricted K(1); synthetic model |
+| 128/256 | `Kalyna_128-256/kalyna128_256_4round_combined.py` | 2R → 4R | No weak-key restriction; genuine master keys |
+| 128/256 | `Kalyna_128-256/kalyna128_256_5round_combined.py` | 3R → 5R | Restricted pre-whitening round subkey; synthetic model |
+| 128/256 | `Kalyna_128-256/kalyna128_256_6round_combined.py` | 4R → 6R | No initial pre-whitening; restricted K(1); synthetic model |
+| 256/256 | `Kalyna_256-256/kalyna256_256_3round_combined.py` | 2R → 3R | No weak-key restriction; genuine master keys |
+| 256/256 | `Kalyna_256-256/kalyna256_256_4round_combined.py` | 3R → 4R | Two active bytes; Kpw[24] = 0; restricted model |
+| 256/256 | `Kalyna_256-256/kalyna256_256_5round_combined.py` | 4R → 5R | Two active bytes; 16 zero Kpw bytes; restricted model |
+| 256/512 | `Kalyna_256-512/kalyna256_512_4round_combined.py` | 2R → 4R | No weak-key restriction; genuine master keys |
+| 256/512 | `Kalyna_256-512/kalyna256_512_5round_combined.py` | 3R → 5R | Two active bytes; **genuine conditioned master keys** with Kpw[24] = 0 |
+| 256/512 | `Kalyna_256-512/kalyna256_512_6round_combined.py` | 4R → 6R | Two active bytes; 16 zero Kpw bytes; restricted model |
+| 512/512 | `Kalyna_512-512/kalyna512_512_4round_combined.py` | 3R → 4R | No weak-key restriction; genuine master keys |
+| 512/512 | `Kalyna_512-512/kalyna512_512_5round_combined.py` | 4R → 5R | Eight zero Kpw bytes; restricted model |
+| 512/512 | `Kalyna_512-512/kalyna512_512_6round_combined.py` | 5R → 6R | No initial pre-whitening; eight zero K(1) bytes; restricted model |
 
 Here `Kpw` means the initial modulo-addition pre-whitening subkey, while `K(1)`
 means the first internal round subkey. A *no-pre-whitening* model does not apply
@@ -61,11 +61,11 @@ source .venv/bin/activate
 python3 -m pip install -r requirements.txt
 
 # Small initial smoke test (5 trials)
-python3 Kalyna-512-512/kalyna512_512_6round_combined.py \
+python3 Kalyna_512-512/kalyna512_512_6round_combined.py \
   --trials 5 --jobs 2 --out smoke_512_512_R6
 
 # Published-style experiment configuration (1000 trials)
-python3 Kalyna-512-512/kalyna512_512_6round_combined.py \
+python3 Kalyna_512-512/kalyna512_512_6round_combined.py \
   --trials 1000 --jobs 4 --seed 20261117 --out KALYNA512_512_R6_REPLAY
 ```
 
@@ -73,7 +73,7 @@ To run another experiment, substitute the path of its `.py` script from the tabl
 Every script provides its own CLI flags; consult:
 
 ```bash
-python3 Kalyna-256-512/kalyna256_512_5round_combined.py --help
+python3 Kalyna_256-512/kalyna256_512_5round_combined.py --help
 ```
 
 Some programs support `--resume` for interrupted runs. Resume requires the same
