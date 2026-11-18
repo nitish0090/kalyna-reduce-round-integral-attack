@@ -1,0 +1,10 @@
+# Python temporary files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+# Locally generated experiment output (keep source/test code in Git)
+*_RESULTS/
+*_REPLAY/
+*.log
+.DS_Store
