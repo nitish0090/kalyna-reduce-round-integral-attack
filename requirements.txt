@@ -1,3 +1,0 @@
-# The original experimental results were generated using NumPy 2.3.5;
-# the user independently reproduced the reported totals with NumPy 2.5.5.
-numpy>=2.0,<3
