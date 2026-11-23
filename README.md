@@ -93,6 +93,20 @@ records are written to the output folder chosen with `--out`.
 - The provided code is research software for reproducibility, not a production
   cryptographic library.
 
+## Exhaustive validation
+
+Additional experiments are available in the
+[exhaustive_validation](exhaustive_validation/)
+directory.
+
+These experiments examine wrong-key filtering
+using a 16-bit Kalyna-like model and selected
+16-bit terminal-subkey slices of Kalyna-128/128.
+
+The directory contains the implementation,
+experimental results, and commands for
+reproducing the tests.
+
 ## Citation
 
 If using this repository for a paper, add the final article citation, DOI, and
