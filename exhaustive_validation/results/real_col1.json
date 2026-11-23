@@ -1,0 +1,101 @@
+{
+  "script": "exhaustive_validation.py",
+  "model_statement": "Toy model and actual Kalyna are DIFFERENT experiments",
+  "real": {
+    "type": "real_Kalyna128_128_16bit_key_subspace_exhaustive",
+    "experimental_scope": "For each of several genuine-master-key trials, exhaustive 2^16 values of two selected key bytes; six other bytes of the 64-bit column are held at the TRUE values; NOT full 2^64 exhaustive search",
+    "trials": 4,
+    "tested_per_trial": 65536,
+    "total_tested": 262144,
+    "incorrect_total_tested": 262140,
+    "correct_retained": 4,
+    "wrong_survived_first": 0,
+    "wrong_survived_both": 0,
+    "per_trial": [
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261120,
+        "trial": 0,
+        "column": 1,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "306a7aca81ac2d09",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.423
+      },
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261121,
+        "trial": 1,
+        "column": 1,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "0c59ccf0722790eb",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.388
+      },
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261122,
+        "trial": 2,
+        "column": 1,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "805b85c500b0ff38",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.429
+      },
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261123,
+        "trial": 3,
+        "column": 1,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "f43cdd030057ec20",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.531
+      }
+    ]
+  }
+}
