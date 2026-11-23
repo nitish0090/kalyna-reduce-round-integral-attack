@@ -47,7 +47,7 @@ Do not interchange the weak-key restrictions between variants or rounds.
 ## Requirements
 
 - Python 3.10 or newer
-- NumPy (`pip install -r requirements.txt`)
+- NumPy 2.x (`pip install -r exhaustive_validation/requirements.txt`)
 - Enough RAM and disk for the selected trial count; two-active-byte structures
   include 65,536 chosen plaintexts per multiset and may require substantial runtime.
 
@@ -64,7 +64,7 @@ python3 -m pip install -r exhaustive_validation/requirements.txt
 python3 Kalyna_512-512/kalyna512_512_6round_combined.py \
   --trials 5 --jobs 2 --out smoke_512_512_R6
 
-# Published-style experiment configuration (1000 trials)
+# Full validation run (1000 trials)
 python3 Kalyna_512-512/kalyna512_512_6round_combined.py \
   --trials 1000 --jobs 4 --seed 20261117 --out KALYNA512_512_R6_REPLAY
 ```
