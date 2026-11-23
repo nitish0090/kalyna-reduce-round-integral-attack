@@ -1,0 +1,4476 @@
+{
+  "script": "exhaustive_validation.py",
+  "model_statement": "Toy model and actual Kalyna are DIFFERENT experiments",
+  "toy": {
+    "type": "toy_16bit_exhaustive_terminal_key",
+    "cipher": "16-bit Kalyna-like SPN; two 8-bit columns, 4-bit S-box, GF(16) MDS, 2 internal rounds plus modular terminal whitening",
+    "experimental_scope": "Exhaustive all 65536 terminal keys per trial; toy cipher, NOT standardized Kalyna",
+    "seed": 20261119,
+    "trials": 256,
+    "keys_tested": 16777216,
+    "incorrect_keys_tested": 16776960,
+    "incorrect_survived_first": 1974,
+    "incorrect_survived_both": 772,
+    "one_bit_wrong_tested": 4096,
+    "one_bit_wrong_survived_first": 526,
+    "one_bit_wrong_survived_both": 512,
+    "correct_retained": 256,
+    "trials_with_nonunique_survivors": 256,
+    "seconds": 8.046,
+    "per_trial": [
+      {
+        "trial": 0,
+        "true_terminal_key": "be60",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3e60",
+          "3ee0",
+          "bee0"
+        ]
+      },
+      {
+        "trial": 1,
+        "true_terminal_key": "4509",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4589",
+          "c509",
+          "c589"
+        ]
+      },
+      {
+        "trial": 2,
+        "true_terminal_key": "861b",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "061b",
+          "069b",
+          "869b"
+        ]
+      },
+      {
+        "trial": 3,
+        "true_terminal_key": "1f0c",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1f8c",
+          "9f0c",
+          "9f8c"
+        ]
+      },
+      {
+        "trial": 4,
+        "true_terminal_key": "c213",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4213",
+          "4293",
+          "c293"
+        ]
+      },
+      {
+        "trial": 5,
+        "true_terminal_key": "7a46",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7ac6",
+          "fa46",
+          "fac6"
+        ]
+      },
+      {
+        "trial": 6,
+        "true_terminal_key": "eb2e",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6b2e",
+          "6bae",
+          "ebae"
+        ]
+      },
+      {
+        "trial": 7,
+        "true_terminal_key": "61cd",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "614d",
+          "e14d",
+          "e1cd"
+        ]
+      },
+      {
+        "trial": 8,
+        "true_terminal_key": "c238",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4238",
+          "42b8",
+          "c2b8"
+        ]
+      },
+      {
+        "trial": 9,
+        "true_terminal_key": "1b01",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1b81",
+          "9b01",
+          "9b81"
+        ]
+      },
+      {
+        "trial": 10,
+        "true_terminal_key": "e2fb",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "627b",
+          "62fb",
+          "e27b"
+        ]
+      },
+      {
+        "trial": 11,
+        "true_terminal_key": "1190",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1110",
+          "9110",
+          "9190"
+        ]
+      },
+      {
+        "trial": 12,
+        "true_terminal_key": "3791",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3711",
+          "b711",
+          "b791"
+        ]
+      },
+      {
+        "trial": 13,
+        "true_terminal_key": "f52a",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "752a",
+          "75aa",
+          "f5aa"
+        ]
+      },
+      {
+        "trial": 14,
+        "true_terminal_key": "65e3",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6563",
+          "e563",
+          "e5e3"
+        ]
+      },
+      {
+        "trial": 15,
+        "true_terminal_key": "f4e5",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7465",
+          "74e5",
+          "f465"
+        ]
+      },
+      {
+        "trial": 16,
+        "true_terminal_key": "d707",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5707",
+          "5787",
+          "d787"
+        ]
+      },
+      {
+        "trial": 17,
+        "true_terminal_key": "9343",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1343",
+          "13c3",
+          "93c3"
+        ]
+      },
+      {
+        "trial": 18,
+        "true_terminal_key": "f28d",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "720d",
+          "728d",
+          "f20d"
+        ]
+      },
+      {
+        "trial": 19,
+        "true_terminal_key": "4f71",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4ff1",
+          "cf71",
+          "cff1"
+        ]
+      },
+      {
+        "trial": 20,
+        "true_terminal_key": "da3b",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5a3b",
+          "5abb",
+          "dabb"
+        ]
+      },
+      {
+        "trial": 21,
+        "true_terminal_key": "ce9d",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4e1d",
+          "4e9d",
+          "ce1d"
+        ]
+      },
+      {
+        "trial": 22,
+        "true_terminal_key": "d93f",
+        "tested": 65536,
+        "first": 24,
+        "both": 4,
+        "wrong_first": 23,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "593f",
+          "59bf",
+          "d9bf"
+        ]
+      },
+      {
+        "trial": 23,
+        "true_terminal_key": "a7c5",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2745",
+          "27c5",
+          "a745"
+        ]
+      },
+      {
+        "trial": 24,
+        "true_terminal_key": "ffa4",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7f24",
+          "7fa4",
+          "ff24"
+        ]
+      },
+      {
+        "trial": 25,
+        "true_terminal_key": "db58",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5b58",
+          "5bd8",
+          "dbd8"
+        ]
+      },
+      {
+        "trial": 26,
+        "true_terminal_key": "4903",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4983",
+          "c903",
+          "c983"
+        ]
+      },
+      {
+        "trial": 27,
+        "true_terminal_key": "0f5e",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0fde",
+          "8f5e",
+          "8fde"
+        ]
+      },
+      {
+        "trial": 28,
+        "true_terminal_key": "9a53",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1a53",
+          "1ad3",
+          "9ad3"
+        ]
+      },
+      {
+        "trial": 29,
+        "true_terminal_key": "1c40",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1cc0",
+          "9c40",
+          "9cc0"
+        ]
+      },
+      {
+        "trial": 30,
+        "true_terminal_key": "6a1d",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6a9d",
+          "ea1d",
+          "ea9d"
+        ]
+      },
+      {
+        "trial": 31,
+        "true_terminal_key": "1b06",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1b86",
+          "9b06",
+          "9b86"
+        ]
+      },
+      {
+        "trial": 32,
+        "true_terminal_key": "f3be",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "733e",
+          "73be",
+          "f33e"
+        ]
+      },
+      {
+        "trial": 33,
+        "true_terminal_key": "207d",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "20fd",
+          "a07d",
+          "a0fd"
+        ]
+      },
+      {
+        "trial": 34,
+        "true_terminal_key": "d842",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5842",
+          "58c2",
+          "d8c2"
+        ]
+      },
+      {
+        "trial": 35,
+        "true_terminal_key": "2af8",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2a78",
+          "aa78",
+          "aaf8"
+        ]
+      },
+      {
+        "trial": 36,
+        "true_terminal_key": "dd9f",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5d1f",
+          "5d9f",
+          "dd1f"
+        ]
+      },
+      {
+        "trial": 37,
+        "true_terminal_key": "24c4",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2444",
+          "a444",
+          "a4c4"
+        ]
+      },
+      {
+        "trial": 38,
+        "true_terminal_key": "05a7",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0527",
+          "8527",
+          "85a7"
+        ]
+      },
+      {
+        "trial": 39,
+        "true_terminal_key": "0c32",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0cb2",
+          "8c32",
+          "8cb2"
+        ]
+      },
+      {
+        "trial": 40,
+        "true_terminal_key": "2c0f",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2c8f",
+          "ac0f",
+          "ac8f"
+        ]
+      },
+      {
+        "trial": 41,
+        "true_terminal_key": "0623",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "06a3",
+          "8623",
+          "86a3"
+        ]
+      },
+      {
+        "trial": 42,
+        "true_terminal_key": "e954",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6954",
+          "69d4",
+          "e9d4"
+        ]
+      },
+      {
+        "trial": 43,
+        "true_terminal_key": "96d6",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1656",
+          "16d6",
+          "9656"
+        ]
+      },
+      {
+        "trial": 44,
+        "true_terminal_key": "4ac2",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4a42",
+          "ca42",
+          "cac2"
+        ]
+      },
+      {
+        "trial": 45,
+        "true_terminal_key": "8621",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0621",
+          "06a1",
+          "86a1"
+        ]
+      },
+      {
+        "trial": 46,
+        "true_terminal_key": "c26e",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "426e",
+          "42ee",
+          "c2ee"
+        ]
+      },
+      {
+        "trial": 47,
+        "true_terminal_key": "69ad",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "692d",
+          "e92d",
+          "e9ad"
+        ]
+      },
+      {
+        "trial": 48,
+        "true_terminal_key": "93a2",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1322",
+          "13a2",
+          "9322"
+        ]
+      },
+      {
+        "trial": 49,
+        "true_terminal_key": "2bbf",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2b3f",
+          "ab3f",
+          "abbf"
+        ]
+      },
+      {
+        "trial": 50,
+        "true_terminal_key": "9e4b",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1e4b",
+          "1ecb",
+          "9ecb"
+        ]
+      },
+      {
+        "trial": 51,
+        "true_terminal_key": "a986",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2906",
+          "2986",
+          "a906"
+        ]
+      },
+      {
+        "trial": 52,
+        "true_terminal_key": "f1c7",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7147",
+          "71c7",
+          "f147"
+        ]
+      },
+      {
+        "trial": 53,
+        "true_terminal_key": "6092",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6012",
+          "e012",
+          "e092"
+        ]
+      },
+      {
+        "trial": 54,
+        "true_terminal_key": "2938",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "29b8",
+          "a938",
+          "a9b8"
+        ]
+      },
+      {
+        "trial": 55,
+        "true_terminal_key": "8bd3",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0b53",
+          "0bd3",
+          "8b53"
+        ]
+      },
+      {
+        "trial": 56,
+        "true_terminal_key": "f124",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7124",
+          "71a4",
+          "f1a4"
+        ]
+      },
+      {
+        "trial": 57,
+        "true_terminal_key": "7f92",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7f12",
+          "ff12",
+          "ff92"
+        ]
+      },
+      {
+        "trial": 58,
+        "true_terminal_key": "d34a",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "534a",
+          "53ca",
+          "d3ca"
+        ]
+      },
+      {
+        "trial": 59,
+        "true_terminal_key": "bbb9",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3b39",
+          "3bb9",
+          "bb39"
+        ]
+      },
+      {
+        "trial": 60,
+        "true_terminal_key": "d738",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5738",
+          "57b8",
+          "d7b8"
+        ]
+      },
+      {
+        "trial": 61,
+        "true_terminal_key": "8599",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0519",
+          "0599",
+          "8519"
+        ]
+      },
+      {
+        "trial": 62,
+        "true_terminal_key": "7240",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "72c0",
+          "f240",
+          "f2c0"
+        ]
+      },
+      {
+        "trial": 63,
+        "true_terminal_key": "8e0a",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0e0a",
+          "0e8a",
+          "8e8a"
+        ]
+      },
+      {
+        "trial": 64,
+        "true_terminal_key": "21ce",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "214e",
+          "a14e",
+          "a1ce"
+        ]
+      },
+      {
+        "trial": 65,
+        "true_terminal_key": "d8a9",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5829",
+          "58a9",
+          "d829"
+        ]
+      },
+      {
+        "trial": 66,
+        "true_terminal_key": "a2c7",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2247",
+          "22c7",
+          "a247"
+        ]
+      },
+      {
+        "trial": 67,
+        "true_terminal_key": "aa7f",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2a7f",
+          "2aff",
+          "aaff"
+        ]
+      },
+      {
+        "trial": 68,
+        "true_terminal_key": "1082",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1002",
+          "9002",
+          "9082"
+        ]
+      },
+      {
+        "trial": 69,
+        "true_terminal_key": "b64d",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "364d",
+          "36cd",
+          "b6cd"
+        ]
+      },
+      {
+        "trial": 70,
+        "true_terminal_key": "7e78",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7ef8",
+          "fe78",
+          "fef8"
+        ]
+      },
+      {
+        "trial": 71,
+        "true_terminal_key": "d564",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5564",
+          "55e4",
+          "d5e4"
+        ]
+      },
+      {
+        "trial": 72,
+        "true_terminal_key": "cdcc",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4d4c",
+          "4dcc",
+          "cd4c"
+        ]
+      },
+      {
+        "trial": 73,
+        "true_terminal_key": "a808",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2808",
+          "2888",
+          "a888"
+        ]
+      },
+      {
+        "trial": 74,
+        "true_terminal_key": "3020",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "30a0",
+          "b020",
+          "b0a0"
+        ]
+      },
+      {
+        "trial": 75,
+        "true_terminal_key": "a232",
+        "tested": 65536,
+        "first": 20,
+        "both": 4,
+        "wrong_first": 19,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2232",
+          "22b2",
+          "a2b2"
+        ]
+      },
+      {
+        "trial": 76,
+        "true_terminal_key": "f5b3",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7533",
+          "75b3",
+          "f533"
+        ]
+      },
+      {
+        "trial": 77,
+        "true_terminal_key": "5b4d",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5bcd",
+          "db4d",
+          "dbcd"
+        ]
+      },
+      {
+        "trial": 78,
+        "true_terminal_key": "98d6",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1856",
+          "18d6",
+          "9856"
+        ]
+      },
+      {
+        "trial": 79,
+        "true_terminal_key": "a284",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2204",
+          "2284",
+          "a204"
+        ]
+      },
+      {
+        "trial": 80,
+        "true_terminal_key": "3302",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3382",
+          "b302",
+          "b382"
+        ]
+      },
+      {
+        "trial": 81,
+        "true_terminal_key": "e52f",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "652f",
+          "65af",
+          "e5af"
+        ]
+      },
+      {
+        "trial": 82,
+        "true_terminal_key": "86a2",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0622",
+          "06a2",
+          "8622"
+        ]
+      },
+      {
+        "trial": 83,
+        "true_terminal_key": "993e",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "193e",
+          "19be",
+          "99be"
+        ]
+      },
+      {
+        "trial": 84,
+        "true_terminal_key": "1dc9",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1d49",
+          "9d49",
+          "9dc9"
+        ]
+      },
+      {
+        "trial": 85,
+        "true_terminal_key": "bb3d",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3b3d",
+          "3bbd",
+          "bbbd"
+        ]
+      },
+      {
+        "trial": 86,
+        "true_terminal_key": "91e5",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1165",
+          "11e5",
+          "9165"
+        ]
+      },
+      {
+        "trial": 87,
+        "true_terminal_key": "84ef",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "046f",
+          "04ef",
+          "846f"
+        ]
+      },
+      {
+        "trial": 88,
+        "true_terminal_key": "7f64",
+        "tested": 65536,
+        "first": 18,
+        "both": 4,
+        "wrong_first": 17,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7fe4",
+          "ff64",
+          "ffe4"
+        ]
+      },
+      {
+        "trial": 89,
+        "true_terminal_key": "612a",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "61aa",
+          "e12a",
+          "e1aa"
+        ]
+      },
+      {
+        "trial": 90,
+        "true_terminal_key": "a7be",
+        "tested": 65536,
+        "first": 21,
+        "both": 4,
+        "wrong_first": 20,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "273e",
+          "27be",
+          "a73e"
+        ]
+      },
+      {
+        "trial": 91,
+        "true_terminal_key": "77ef",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "776f",
+          "f76f",
+          "f7ef"
+        ]
+      },
+      {
+        "trial": 92,
+        "true_terminal_key": "f6da",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "765a",
+          "76da",
+          "f65a"
+        ]
+      },
+      {
+        "trial": 93,
+        "true_terminal_key": "7f08",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7f88",
+          "ff08",
+          "ff88"
+        ]
+      },
+      {
+        "trial": 94,
+        "true_terminal_key": "b16c",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "316c",
+          "31ec",
+          "b1ec"
+        ]
+      },
+      {
+        "trial": 95,
+        "true_terminal_key": "a928",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2928",
+          "29a8",
+          "a9a8"
+        ]
+      },
+      {
+        "trial": 96,
+        "true_terminal_key": "94a5",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1425",
+          "14a5",
+          "9425"
+        ]
+      },
+      {
+        "trial": 97,
+        "true_terminal_key": "f2e3",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7263",
+          "72e3",
+          "f263"
+        ]
+      },
+      {
+        "trial": 98,
+        "true_terminal_key": "586f",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "58ef",
+          "d86f",
+          "d8ef"
+        ]
+      },
+      {
+        "trial": 99,
+        "true_terminal_key": "e709",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6709",
+          "6789",
+          "e789"
+        ]
+      },
+      {
+        "trial": 100,
+        "true_terminal_key": "230b",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "238b",
+          "a30b",
+          "a38b"
+        ]
+      },
+      {
+        "trial": 101,
+        "true_terminal_key": "6f37",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6fb7",
+          "ef37",
+          "efb7"
+        ]
+      },
+      {
+        "trial": 102,
+        "true_terminal_key": "395c",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "39dc",
+          "b95c",
+          "b9dc"
+        ]
+      },
+      {
+        "trial": 103,
+        "true_terminal_key": "6e74",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6ef4",
+          "ee74",
+          "eef4"
+        ]
+      },
+      {
+        "trial": 104,
+        "true_terminal_key": "86be",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "063e",
+          "06be",
+          "863e"
+        ]
+      },
+      {
+        "trial": 105,
+        "true_terminal_key": "818b",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "010b",
+          "018b",
+          "810b"
+        ]
+      },
+      {
+        "trial": 106,
+        "true_terminal_key": "0c12",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0c92",
+          "8c12",
+          "8c92"
+        ]
+      },
+      {
+        "trial": 107,
+        "true_terminal_key": "a0d8",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2058",
+          "20d8",
+          "a058"
+        ]
+      },
+      {
+        "trial": 108,
+        "true_terminal_key": "11be",
+        "tested": 65536,
+        "first": 24,
+        "both": 4,
+        "wrong_first": 23,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "113e",
+          "913e",
+          "91be"
+        ]
+      },
+      {
+        "trial": 109,
+        "true_terminal_key": "5ca6",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5c26",
+          "dc26",
+          "dca6"
+        ]
+      },
+      {
+        "trial": 110,
+        "true_terminal_key": "bdac",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3d2c",
+          "3dac",
+          "bd2c"
+        ]
+      },
+      {
+        "trial": 111,
+        "true_terminal_key": "05a1",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0521",
+          "8521",
+          "85a1"
+        ]
+      },
+      {
+        "trial": 112,
+        "true_terminal_key": "f9bd",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "793d",
+          "79bd",
+          "f93d"
+        ]
+      },
+      {
+        "trial": 113,
+        "true_terminal_key": "78c9",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7849",
+          "f849",
+          "f8c9"
+        ]
+      },
+      {
+        "trial": 114,
+        "true_terminal_key": "1af3",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1a73",
+          "9a73",
+          "9af3"
+        ]
+      },
+      {
+        "trial": 115,
+        "true_terminal_key": "84c6",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0446",
+          "04c6",
+          "8446"
+        ]
+      },
+      {
+        "trial": 116,
+        "true_terminal_key": "37a9",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3729",
+          "b729",
+          "b7a9"
+        ]
+      },
+      {
+        "trial": 117,
+        "true_terminal_key": "b545",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3545",
+          "35c5",
+          "b5c5"
+        ]
+      },
+      {
+        "trial": 118,
+        "true_terminal_key": "5892",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5812",
+          "d812",
+          "d892"
+        ]
+      },
+      {
+        "trial": 119,
+        "true_terminal_key": "17c8",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1748",
+          "9748",
+          "97c8"
+        ]
+      },
+      {
+        "trial": 120,
+        "true_terminal_key": "a6e0",
+        "tested": 65536,
+        "first": 14,
+        "both": 4,
+        "wrong_first": 13,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2660",
+          "26e0",
+          "a660"
+        ]
+      },
+      {
+        "trial": 121,
+        "true_terminal_key": "734f",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "73cf",
+          "f34f",
+          "f3cf"
+        ]
+      },
+      {
+        "trial": 122,
+        "true_terminal_key": "a346",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2346",
+          "23c6",
+          "a3c6"
+        ]
+      },
+      {
+        "trial": 123,
+        "true_terminal_key": "4423",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "44a3",
+          "c423",
+          "c4a3"
+        ]
+      },
+      {
+        "trial": 124,
+        "true_terminal_key": "1d1f",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1d9f",
+          "9d1f",
+          "9d9f"
+        ]
+      },
+      {
+        "trial": 125,
+        "true_terminal_key": "cd22",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4d22",
+          "4da2",
+          "cda2"
+        ]
+      },
+      {
+        "trial": 126,
+        "true_terminal_key": "aaf8",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2a78",
+          "2af8",
+          "aa78"
+        ]
+      },
+      {
+        "trial": 127,
+        "true_terminal_key": "85e4",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0564",
+          "05e4",
+          "8564"
+        ]
+      },
+      {
+        "trial": 128,
+        "true_terminal_key": "9373",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1373",
+          "13f3",
+          "93f3"
+        ]
+      },
+      {
+        "trial": 129,
+        "true_terminal_key": "e803",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6803",
+          "6883",
+          "e883"
+        ]
+      },
+      {
+        "trial": 130,
+        "true_terminal_key": "d4c1",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5441",
+          "54c1",
+          "d441"
+        ]
+      },
+      {
+        "trial": 131,
+        "true_terminal_key": "d549",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5549",
+          "55c9",
+          "d5c9"
+        ]
+      },
+      {
+        "trial": 132,
+        "true_terminal_key": "bf25",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3f25",
+          "3fa5",
+          "bfa5"
+        ]
+      },
+      {
+        "trial": 133,
+        "true_terminal_key": "2871",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "28f1",
+          "a871",
+          "a8f1"
+        ]
+      },
+      {
+        "trial": 134,
+        "true_terminal_key": "d24a",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "524a",
+          "52ca",
+          "d2ca"
+        ]
+      },
+      {
+        "trial": 135,
+        "true_terminal_key": "e7f3",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6773",
+          "67f3",
+          "e773"
+        ]
+      },
+      {
+        "trial": 136,
+        "true_terminal_key": "5870",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "58f0",
+          "d870",
+          "d8f0"
+        ]
+      },
+      {
+        "trial": 137,
+        "true_terminal_key": "13a3",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1323",
+          "9323",
+          "93a3"
+        ]
+      },
+      {
+        "trial": 138,
+        "true_terminal_key": "42b2",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4232",
+          "c232",
+          "c2b2"
+        ]
+      },
+      {
+        "trial": 139,
+        "true_terminal_key": "3187",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3107",
+          "b107",
+          "b187"
+        ]
+      },
+      {
+        "trial": 140,
+        "true_terminal_key": "57f7",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5777",
+          "d777",
+          "d7f7"
+        ]
+      },
+      {
+        "trial": 141,
+        "true_terminal_key": "e306",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6306",
+          "6386",
+          "e386"
+        ]
+      },
+      {
+        "trial": 142,
+        "true_terminal_key": "01ce",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "014e",
+          "814e",
+          "81ce"
+        ]
+      },
+      {
+        "trial": 143,
+        "true_terminal_key": "c06c",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "406c",
+          "40ec",
+          "c0ec"
+        ]
+      },
+      {
+        "trial": 144,
+        "true_terminal_key": "2e49",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2ec9",
+          "ae49",
+          "aec9"
+        ]
+      },
+      {
+        "trial": 145,
+        "true_terminal_key": "8a2b",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0a2b",
+          "0aab",
+          "8aab"
+        ]
+      },
+      {
+        "trial": 146,
+        "true_terminal_key": "a641",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2641",
+          "26c1",
+          "a6c1"
+        ]
+      },
+      {
+        "trial": 147,
+        "true_terminal_key": "a0a4",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2024",
+          "20a4",
+          "a024"
+        ]
+      },
+      {
+        "trial": 148,
+        "true_terminal_key": "abc4",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2b44",
+          "2bc4",
+          "ab44"
+        ]
+      },
+      {
+        "trial": 149,
+        "true_terminal_key": "18c7",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1847",
+          "9847",
+          "98c7"
+        ]
+      },
+      {
+        "trial": 150,
+        "true_terminal_key": "58a7",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5827",
+          "d827",
+          "d8a7"
+        ]
+      },
+      {
+        "trial": 151,
+        "true_terminal_key": "7df0",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7d70",
+          "fd70",
+          "fdf0"
+        ]
+      },
+      {
+        "trial": 152,
+        "true_terminal_key": "2da0",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2d20",
+          "ad20",
+          "ada0"
+        ]
+      },
+      {
+        "trial": 153,
+        "true_terminal_key": "a954",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2954",
+          "29d4",
+          "a9d4"
+        ]
+      },
+      {
+        "trial": 154,
+        "true_terminal_key": "0bb0",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0b30",
+          "8b30",
+          "8bb0"
+        ]
+      },
+      {
+        "trial": 155,
+        "true_terminal_key": "057f",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "05ff",
+          "857f",
+          "85ff"
+        ]
+      },
+      {
+        "trial": 156,
+        "true_terminal_key": "3bff",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3b7f",
+          "bb7f",
+          "bbff"
+        ]
+      },
+      {
+        "trial": 157,
+        "true_terminal_key": "af28",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2f28",
+          "2fa8",
+          "afa8"
+        ]
+      },
+      {
+        "trial": 158,
+        "true_terminal_key": "e207",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6207",
+          "6287",
+          "e287"
+        ]
+      },
+      {
+        "trial": 159,
+        "true_terminal_key": "589a",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "581a",
+          "d81a",
+          "d89a"
+        ]
+      },
+      {
+        "trial": 160,
+        "true_terminal_key": "8997",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0917",
+          "0997",
+          "8917"
+        ]
+      },
+      {
+        "trial": 161,
+        "true_terminal_key": "b701",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3701",
+          "3781",
+          "b781"
+        ]
+      },
+      {
+        "trial": 162,
+        "true_terminal_key": "7f06",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7f86",
+          "ff06",
+          "ff86"
+        ]
+      },
+      {
+        "trial": 163,
+        "true_terminal_key": "fa05",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7a05",
+          "7a85",
+          "fa85"
+        ]
+      },
+      {
+        "trial": 164,
+        "true_terminal_key": "72d0",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7250",
+          "f250",
+          "f2d0"
+        ]
+      },
+      {
+        "trial": 165,
+        "true_terminal_key": "c764",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4764",
+          "47e4",
+          "c7e4"
+        ]
+      },
+      {
+        "trial": 166,
+        "true_terminal_key": "1e5b",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1edb",
+          "9e5b",
+          "9edb"
+        ]
+      },
+      {
+        "trial": 167,
+        "true_terminal_key": "e41b",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "641b",
+          "649b",
+          "e49b"
+        ]
+      },
+      {
+        "trial": 168,
+        "true_terminal_key": "c412",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4412",
+          "4492",
+          "c492"
+        ]
+      },
+      {
+        "trial": 169,
+        "true_terminal_key": "082c",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "08ac",
+          "882c",
+          "88ac"
+        ]
+      },
+      {
+        "trial": 170,
+        "true_terminal_key": "990c",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "190c",
+          "198c",
+          "998c"
+        ]
+      },
+      {
+        "trial": 171,
+        "true_terminal_key": "347d",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "34fd",
+          "b47d",
+          "b4fd"
+        ]
+      },
+      {
+        "trial": 172,
+        "true_terminal_key": "c218",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4218",
+          "4298",
+          "c298"
+        ]
+      },
+      {
+        "trial": 173,
+        "true_terminal_key": "f794",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7714",
+          "7794",
+          "f714"
+        ]
+      },
+      {
+        "trial": 174,
+        "true_terminal_key": "2d3b",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2dbb",
+          "ad3b",
+          "adbb"
+        ]
+      },
+      {
+        "trial": 175,
+        "true_terminal_key": "749b",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "741b",
+          "f41b",
+          "f49b"
+        ]
+      },
+      {
+        "trial": 176,
+        "true_terminal_key": "266f",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "26ef",
+          "a66f",
+          "a6ef"
+        ]
+      },
+      {
+        "trial": 177,
+        "true_terminal_key": "01fa",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "017a",
+          "817a",
+          "81fa"
+        ]
+      },
+      {
+        "trial": 178,
+        "true_terminal_key": "d0c0",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5040",
+          "50c0",
+          "d040"
+        ]
+      },
+      {
+        "trial": 179,
+        "true_terminal_key": "e332",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6332",
+          "63b2",
+          "e3b2"
+        ]
+      },
+      {
+        "trial": 180,
+        "true_terminal_key": "825a",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "025a",
+          "02da",
+          "82da"
+        ]
+      },
+      {
+        "trial": 181,
+        "true_terminal_key": "7712",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7792",
+          "f712",
+          "f792"
+        ]
+      },
+      {
+        "trial": 182,
+        "true_terminal_key": "3179",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "31f9",
+          "b179",
+          "b1f9"
+        ]
+      },
+      {
+        "trial": 183,
+        "true_terminal_key": "c72b",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "472b",
+          "47ab",
+          "c7ab"
+        ]
+      },
+      {
+        "trial": 184,
+        "true_terminal_key": "1ac3",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1a43",
+          "9a43",
+          "9ac3"
+        ]
+      },
+      {
+        "trial": 185,
+        "true_terminal_key": "4319",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4399",
+          "c319",
+          "c399"
+        ]
+      },
+      {
+        "trial": 186,
+        "true_terminal_key": "0307",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0387",
+          "8307",
+          "8387"
+        ]
+      },
+      {
+        "trial": 187,
+        "true_terminal_key": "7686",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7606",
+          "f606",
+          "f686"
+        ]
+      },
+      {
+        "trial": 188,
+        "true_terminal_key": "0e47",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0ec7",
+          "8e47",
+          "8ec7"
+        ]
+      },
+      {
+        "trial": 189,
+        "true_terminal_key": "0afa",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0a7a",
+          "8a7a",
+          "8afa"
+        ]
+      },
+      {
+        "trial": 190,
+        "true_terminal_key": "736b",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "73eb",
+          "f36b",
+          "f3eb"
+        ]
+      },
+      {
+        "trial": 191,
+        "true_terminal_key": "723c",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "72bc",
+          "f23c",
+          "f2bc"
+        ]
+      },
+      {
+        "trial": 192,
+        "true_terminal_key": "2149",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "21c9",
+          "a149",
+          "a1c9"
+        ]
+      },
+      {
+        "trial": 193,
+        "true_terminal_key": "2411",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2491",
+          "a411",
+          "a491"
+        ]
+      },
+      {
+        "trial": 194,
+        "true_terminal_key": "cc9e",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4c1e",
+          "4c9e",
+          "cc1e"
+        ]
+      },
+      {
+        "trial": 195,
+        "true_terminal_key": "4dd8",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4d58",
+          "cd58",
+          "cdd8"
+        ]
+      },
+      {
+        "trial": 196,
+        "true_terminal_key": "21da",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "215a",
+          "a15a",
+          "a1da"
+        ]
+      },
+      {
+        "trial": 197,
+        "true_terminal_key": "612e",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "61ae",
+          "e12e",
+          "e1ae"
+        ]
+      },
+      {
+        "trial": 198,
+        "true_terminal_key": "cc1b",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4c1b",
+          "4c9b",
+          "cc9b"
+        ]
+      },
+      {
+        "trial": 199,
+        "true_terminal_key": "199b",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "191b",
+          "991b",
+          "999b"
+        ]
+      },
+      {
+        "trial": 200,
+        "true_terminal_key": "babb",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3a3b",
+          "3abb",
+          "ba3b"
+        ]
+      },
+      {
+        "trial": 201,
+        "true_terminal_key": "7772",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "77f2",
+          "f772",
+          "f7f2"
+        ]
+      },
+      {
+        "trial": 202,
+        "true_terminal_key": "1221",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "12a1",
+          "9221",
+          "92a1"
+        ]
+      },
+      {
+        "trial": 203,
+        "true_terminal_key": "5d6d",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5ded",
+          "dd6d",
+          "dded"
+        ]
+      },
+      {
+        "trial": 204,
+        "true_terminal_key": "e4d2",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6452",
+          "64d2",
+          "e452"
+        ]
+      },
+      {
+        "trial": 205,
+        "true_terminal_key": "185b",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "18db",
+          "985b",
+          "98db"
+        ]
+      },
+      {
+        "trial": 206,
+        "true_terminal_key": "c1e8",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4168",
+          "41e8",
+          "c168"
+        ]
+      },
+      {
+        "trial": 207,
+        "true_terminal_key": "9cec",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1c6c",
+          "1cec",
+          "9c6c"
+        ]
+      },
+      {
+        "trial": 208,
+        "true_terminal_key": "74d0",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7450",
+          "f450",
+          "f4d0"
+        ]
+      },
+      {
+        "trial": 209,
+        "true_terminal_key": "b09f",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "301f",
+          "309f",
+          "b01f"
+        ]
+      },
+      {
+        "trial": 210,
+        "true_terminal_key": "f1c6",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7146",
+          "71c6",
+          "f146"
+        ]
+      },
+      {
+        "trial": 211,
+        "true_terminal_key": "b6ee",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "366e",
+          "36ee",
+          "b66e"
+        ]
+      },
+      {
+        "trial": 212,
+        "true_terminal_key": "b83b",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "383b",
+          "38bb",
+          "b8bb"
+        ]
+      },
+      {
+        "trial": 213,
+        "true_terminal_key": "23ae",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "232e",
+          "a32e",
+          "a3ae"
+        ]
+      },
+      {
+        "trial": 214,
+        "true_terminal_key": "b7c5",
+        "tested": 65536,
+        "first": 10,
+        "both": 4,
+        "wrong_first": 9,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3745",
+          "37c5",
+          "b745"
+        ]
+      },
+      {
+        "trial": 215,
+        "true_terminal_key": "6a9f",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6a1f",
+          "ea1f",
+          "ea9f"
+        ]
+      },
+      {
+        "trial": 216,
+        "true_terminal_key": "2947",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "29c7",
+          "a947",
+          "a9c7"
+        ]
+      },
+      {
+        "trial": 217,
+        "true_terminal_key": "bc95",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3c15",
+          "3c95",
+          "bc15"
+        ]
+      },
+      {
+        "trial": 218,
+        "true_terminal_key": "7899",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7819",
+          "f819",
+          "f899"
+        ]
+      },
+      {
+        "trial": 219,
+        "true_terminal_key": "25d5",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2555",
+          "a555",
+          "a5d5"
+        ]
+      },
+      {
+        "trial": 220,
+        "true_terminal_key": "4249",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "42c9",
+          "c249",
+          "c2c9"
+        ]
+      },
+      {
+        "trial": 221,
+        "true_terminal_key": "77d4",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7754",
+          "f754",
+          "f7d4"
+        ]
+      },
+      {
+        "trial": 222,
+        "true_terminal_key": "f3ca",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "734a",
+          "73ca",
+          "f34a"
+        ]
+      },
+      {
+        "trial": 223,
+        "true_terminal_key": "2fab",
+        "tested": 65536,
+        "first": 15,
+        "both": 4,
+        "wrong_first": 14,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2f2b",
+          "af2b",
+          "afab"
+        ]
+      },
+      {
+        "trial": 224,
+        "true_terminal_key": "71e7",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 3,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7167",
+          "f167",
+          "f1e7"
+        ]
+      },
+      {
+        "trial": 225,
+        "true_terminal_key": "ce21",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4e21",
+          "4ea1",
+          "cea1"
+        ]
+      },
+      {
+        "trial": 226,
+        "true_terminal_key": "a421",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2421",
+          "24a1",
+          "a4a1"
+        ]
+      },
+      {
+        "trial": 227,
+        "true_terminal_key": "120f",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "128f",
+          "920f",
+          "928f"
+        ]
+      },
+      {
+        "trial": 228,
+        "true_terminal_key": "7d24",
+        "tested": 65536,
+        "first": 18,
+        "both": 4,
+        "wrong_first": 17,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7da4",
+          "fd24",
+          "fda4"
+        ]
+      },
+      {
+        "trial": 229,
+        "true_terminal_key": "3647",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "36c7",
+          "b647",
+          "b6c7"
+        ]
+      },
+      {
+        "trial": 230,
+        "true_terminal_key": "987c",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "187c",
+          "18fc",
+          "98fc"
+        ]
+      },
+      {
+        "trial": 231,
+        "true_terminal_key": "c9fd",
+        "tested": 65536,
+        "first": 10,
+        "both": 6,
+        "wrong_first": 9,
+        "wrong_both": 5,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "257d",
+          "25fd",
+          "497d",
+          "49fd",
+          "c97d"
+        ]
+      },
+      {
+        "trial": 232,
+        "true_terminal_key": "b60d",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "360d",
+          "368d",
+          "b68d"
+        ]
+      },
+      {
+        "trial": 233,
+        "true_terminal_key": "90e6",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1066",
+          "10e6",
+          "9066"
+        ]
+      },
+      {
+        "trial": 234,
+        "true_terminal_key": "f023",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7023",
+          "70a3",
+          "f0a3"
+        ]
+      },
+      {
+        "trial": 235,
+        "true_terminal_key": "2022",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "20a2",
+          "a022",
+          "a0a2"
+        ]
+      },
+      {
+        "trial": 236,
+        "true_terminal_key": "fd97",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7d17",
+          "7d97",
+          "fd17"
+        ]
+      },
+      {
+        "trial": 237,
+        "true_terminal_key": "804e",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "004e",
+          "00ce",
+          "80ce"
+        ]
+      },
+      {
+        "trial": 238,
+        "true_terminal_key": "5afc",
+        "tested": 65536,
+        "first": 9,
+        "both": 4,
+        "wrong_first": 8,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "5a7c",
+          "da7c",
+          "dafc"
+        ]
+      },
+      {
+        "trial": 239,
+        "true_terminal_key": "1552",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "15d2",
+          "9552",
+          "95d2"
+        ]
+      },
+      {
+        "trial": 240,
+        "true_terminal_key": "9409",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1409",
+          "1489",
+          "9489"
+        ]
+      },
+      {
+        "trial": 241,
+        "true_terminal_key": "e527",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6527",
+          "65a7",
+          "e5a7"
+        ]
+      },
+      {
+        "trial": 242,
+        "true_terminal_key": "41cc",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "414c",
+          "c14c",
+          "c1cc"
+        ]
+      },
+      {
+        "trial": 243,
+        "true_terminal_key": "7798",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "7718",
+          "f718",
+          "f798"
+        ]
+      },
+      {
+        "trial": 244,
+        "true_terminal_key": "68d0",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6850",
+          "e850",
+          "e8d0"
+        ]
+      },
+      {
+        "trial": 245,
+        "true_terminal_key": "2d9c",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "2d1c",
+          "ad1c",
+          "ad9c"
+        ]
+      },
+      {
+        "trial": 246,
+        "true_terminal_key": "9d80",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1d00",
+          "1d80",
+          "9d00"
+        ]
+      },
+      {
+        "trial": 247,
+        "true_terminal_key": "4bae",
+        "tested": 65536,
+        "first": 10,
+        "both": 6,
+        "wrong_first": 9,
+        "wrong_both": 5,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "4b2e",
+          "4b58",
+          "cb2e",
+          "cb58",
+          "cbae"
+        ]
+      },
+      {
+        "trial": 248,
+        "true_terminal_key": "bfb9",
+        "tested": 65536,
+        "first": 12,
+        "both": 4,
+        "wrong_first": 11,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3f39",
+          "3fb9",
+          "bf39"
+        ]
+      },
+      {
+        "trial": 249,
+        "true_terminal_key": "1e03",
+        "tested": 65536,
+        "first": 6,
+        "both": 4,
+        "wrong_first": 5,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "1e83",
+          "9e03",
+          "9e83"
+        ]
+      },
+      {
+        "trial": 250,
+        "true_terminal_key": "e314",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "6314",
+          "6394",
+          "e394"
+        ]
+      },
+      {
+        "trial": 251,
+        "true_terminal_key": "3d13",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "3d93",
+          "bd13",
+          "bd93"
+        ]
+      },
+      {
+        "trial": 252,
+        "true_terminal_key": "f18c",
+        "tested": 65536,
+        "first": 8,
+        "both": 4,
+        "wrong_first": 7,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "710c",
+          "718c",
+          "f10c"
+        ]
+      },
+      {
+        "trial": 253,
+        "true_terminal_key": "0d9c",
+        "tested": 65536,
+        "first": 16,
+        "both": 4,
+        "wrong_first": 15,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0d1c",
+          "8d1c",
+          "8d9c"
+        ]
+      },
+      {
+        "trial": 254,
+        "true_terminal_key": "8dcf",
+        "tested": 65536,
+        "first": 27,
+        "both": 4,
+        "wrong_first": 26,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0d4f",
+          "0dcf",
+          "8d4f"
+        ]
+      },
+      {
+        "trial": 255,
+        "true_terminal_key": "03f3",
+        "tested": 65536,
+        "first": 4,
+        "both": 4,
+        "wrong_first": 3,
+        "wrong_both": 3,
+        "one_bit_wrong_tested": 16,
+        "one_bit_wrong_first": 2,
+        "one_bit_wrong_both": 2,
+        "example_wrong_survivors": [
+          "0373",
+          "8373",
+          "83f3"
+        ]
+      }
+    ]
+  },
+  "real": {
+    "type": "real_Kalyna128_128_16bit_key_subspace_exhaustive",
+    "experimental_scope": "For each of several genuine-master-key trials, exhaustive 2^16 values of two selected key bytes; six other bytes of the 64-bit column are held at the TRUE values; NOT full 2^64 exhaustive search",
+    "trials": 4,
+    "tested_per_trial": 65536,
+    "total_tested": 262144,
+    "incorrect_total_tested": 262140,
+    "correct_retained": 4,
+    "wrong_survived_first": 0,
+    "wrong_survived_both": 0,
+    "per_trial": [
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261120,
+        "trial": 0,
+        "column": 0,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "ed50d90dbdc9420c",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.428
+      },
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261121,
+        "trial": 1,
+        "column": 0,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "9a388583f8088d75",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.48
+      },
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261122,
+        "trial": 2,
+        "column": 0,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "fae9b4cd6ea910e6",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.486
+      },
+      {
+        "type": "real_Kalyna128_128_terminal_column_16bit_subspace",
+        "reference_sha256": "8a39cadb8dbf161d1a534b46f319c8b7f6d512224b50faf05fc2345d5a45eead",
+        "experimental_scope": "Exhaustive ALL 2^16 candidate values in the selected two-byte slice of one 64-bit terminal-key column; OTHER SIX BYTES are FIXED at their TRUE values, not a 2^64 exhaustive search",
+        "underlying_integral": "2-round exact integral, 2x256 chosen plaintexts, 3-round target",
+        "seed": 20261123,
+        "trial": 3,
+        "column": 0,
+        "positions": [
+          0,
+          7
+        ],
+        "correct_64bit_column_hex": "cb4f53f885d2b6c8",
+        "tested": 65536,
+        "incorrect_tested": 65535,
+        "incorrect_survived_first": 0,
+        "incorrect_survived_both": 0,
+        "correct_retained": true,
+        "additional_wrong_survivors": [],
+        "seconds": 2.542
+      }
+    ]
+  }
+}
