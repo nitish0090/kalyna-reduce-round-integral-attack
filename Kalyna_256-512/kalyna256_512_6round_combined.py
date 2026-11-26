@@ -2,10 +2,10 @@
 """Kalyna-256/512: EXACT 4-round conditional integral -> 6-round filtering.
 
 Updated manuscript Section 4.3 & Section 6 Algorithm 4, Table 2.
-P4(x,y)=F^-1(F(0) xor x e7 xor y e24), all (x,y) in GF(256)^2.
+P4(x,y)=F^-1(F(0) xor x e6 xor y e7), all (x,y) in GF(256)^2.
 Two valid, disjoint 2^16 plaintext multisets; 2^17 total chosen texts.
-Weak Kpw bytes MUST vanish on I={0,1,6,7,12,13,14,15,18,19,20,21,24,25,26,27}.
-Subkey-space fraction 2^-128. Synthetic restricted round subkeys, with
+Weak Kpw bytes MUST vanish on I={0,1,14,15,20,21,26,27}.
+Subkey-space fraction 2^-64. Synthetic restricted round subkeys, with
 all mandatory K(odd)=RotL_88(K(odd-1)) relations; NOT verified real master keys.
 
 At X4 (internal XOR-keyed round), all 32 bytes balance. Then R6 has
@@ -25,9 +25,10 @@ import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
+from itertools import combinations
 import numpy as np
 
-VERSION = '1.0'
+VERSION = '2.0-256512-r6-active67'
 REFERENCE = 'https://github.com/Roman-Oliynykov/Kalyna-reference'
 REFERENCE_COMMIT = '22eafbcaf6635dc5e1f8a734b1f7c5ab84b5a5ea'
 
@@ -173,12 +174,6 @@ def expand_key(master):
 TEST_CT = '606990e9e6b7b67a4bd6d893d72268b78e02c83c3cd7e102fd2e74a8fdfe5dd9'
 def xorsum(v):return np.bitwise_xor.reduce(a8(v),axis=-2)
 
-TEST_CT = '606990e9e6b7b67a4bd6d893d72268b78e02c83c3cd7e102fd2e74a8fdfe5dd9'
-def xorsum(v):return np.bitwise_xor.reduce(a8(v),axis=-2)
-
-DATA_PER_MULTISET = 256
-D = 512
-G_VALUES = np.arange(256,dtype=np.uint8)
 
 
 def encrypt_full(p, keys):
@@ -221,14 +216,11 @@ def test_core():
 
 from functools import lru_cache
 
-VERSION = '1.0'
-I_X = (0,1,14,15,20,21,26,27)
-I_Y = (6,7,12,13,18,19,24,25)
-I_WEAK = tuple(sorted(I_X+I_Y))
-ACTIVE = (7,24)
+I_WEAK = (0,1,14,15,20,21,26,27)
+ACTIVE = (6,7)
 N = 1 << 16
 DATA = 2*N
-OFFSET_BYTE = 28
+OFFSET_BYTE = 2  # Above variable bytes 0 and 1 in the first column
 ZERO = np.zeros(32, dtype=np.uint8)
 BYTE_GUESSES = np.arange(256,dtype=np.uint8)
 
@@ -237,11 +229,21 @@ BYTE_GUESSES = np.arange(256,dtype=np.uint8)
 def p4_base():
     """Exact, cached, key-INDEPENDENT plaintext multiset."""
     t=np.broadcast_to(F(ZERO),(N,32)).copy()
-    t[:,7] ^= np.repeat(BYTE_GUESSES,256)
-    t[:,24] ^= np.tile(BYTE_GUESSES,256)
+    x=np.repeat(BYTE_GUESSES,256)
+    y=np.tile(BYTE_GUESSES,256)
+    t[:,ACTIVE[0]] ^= x
+    t[:,ACTIVE[1]] ^= y
     p=Finv(t)
     assert np.array_equal(F(p),t), 'P4 preimage identity failed'
-    assert np.all(p[:,list(set(range(32))-set(I_WEAK))]==0)
+    assert tuple(np.flatnonzero(np.any(p != 0,axis=0)))==I_WEAK
+    assert not np.any(p[0])
+    expected=np.zeros_like(p)
+    for r in range(8):
+        c=(-int(SHIFT[r]))%COLS
+        expected[:,8*c+r]=INV_SBOX[r%4,SBOX[r%4,0]^GF[IMDS[r,6],x]^GF[IMDS[r,7],y]]
+    assert np.array_equal(p,expected), 'Appendix B.3 byte formula failed'
+    assert OFFSET_BYTE not in I_WEAK
+    assert all(i%8<OFFSET_BYTE%8 for i in I_WEAK if i//8==OFFSET_BYTE//8)
     p.flags.writeable=False
     return p
 
@@ -303,10 +305,18 @@ def check_distinguisher(ps,k,a):
         tmp=x1.copy();tmp[:,list(ACTIVE)]=0
         assert np.all(tmp==tmp[0]), 'First round not exact two-byte product'
         assert full_product_two_byte(x1)
+        h=x0[0]
+        assert not np.any(h[list(I_WEAK)])
+        assert np.array_equal(x0,p4_base()^h)
+        expected=np.broadcast_to(F(h)^k[1],x1.shape).copy()
+        expected[:,ACTIVE[0]]^=np.repeat(BYTE_GUESSES,256)
+        expected[:,ACTIVE[1]]^=np.tile(BYTE_GUESSES,256)
+        assert np.array_equal(x1,expected), 'Exact first-round identity failed'
         assert np.all(x2[:,:24]==x2[0,:24]), 'Unexpected X2 active columns'
         for i in range(24,32):
             assert np.all(np.bincount(x2[:,i],minlength=256)==256), ('X2 All',i)
-        assert full_product_two_byte(x2,(24,31)), 'Missing pairwise All property'
+        for i,jj in combinations(range(24,32),2):
+            assert full_product_two_byte(x2,(i,jj)), ('Missing joint uniformity',i,jj)
         for i in range(32):
             assert np.all(np.bincount(x3[:,i],minlength=256)==256), ('X3 All',i)
         assert not np.any(xorsum(x4)), 'X4 not balanced'
@@ -370,10 +380,16 @@ def wrong_terminal_candidates(true_k6,rng,trial,random_wrong,singlebit,msb,carry
     for z in range(singlebit):
         v=true_k6.copy();bit=(trial*127+z*41)%256
         v[bit//8]^=np.uint8(1<<(bit%8));add(v,'single-bit')
-    for z in range(255 if full_msb else msb):
-        v=true_k6.copy();idx=7+8*((trial+z)%4)
-        v[idx]^=np.uint8(1+(z if full_msb else (trial*13+z*29)%255))
-        add(v,'MSB-byte')
+    if full_msb:
+        for col in range(4):
+            for d in range(1,256):
+                v=true_k6.copy();v[8*col+7]^=np.uint8(d)
+                add(v,'MSB-byte')
+    else:
+        for z in range(msb):
+            v=true_k6.copy();idx=7+8*((trial+z)%4)
+            v[idx]^=np.uint8(1+(trial*13+z*29)%255)
+            add(v,'MSB-byte')
     for j in range(carry):
         col=(trial+j)%4
         q=true_k6.copy()
@@ -417,7 +433,8 @@ def trial_run(trial,seed,random_wrong,singlebit,msb,carry,wrong_trials,full_msb_
             if gall is not None:
                 wrong_final+=1
                 survivors.append(dict(trial=trial,type=typ,K6=candidate.tobytes().hex(),
-                                      candidate_byte_sizes=[len(z) for z in gall]))
+                                      candidate_byte_sizes=[len(z) for z in gall],
+                                      equivalent_K5_byte_candidate_sets=[z.tolist() for z in gall]))
     nonweak=None
     if trial<nonweak_controls:
         bad=k.copy();bad[0,0]=np.uint8(int(rng.integers(1,256)))
@@ -434,11 +451,12 @@ def trial_run(trial,seed,random_wrong,singlebit,msb,carry,wrong_trials,full_msb_
                 correct_K4_derived=True,extra_equivalent_K5_candidates=sz-1,
                 equivalent_K5_candidate_count=str(sz),
                 equivalent_K5_byte_sizes=[len(z) for z in G],
+                equivalent_K5_byte_candidate_sets=[z.tolist() for z in G],
                 wrong_full_K6_tested=wrong_tested,wrong_pass_first=wrong_first,
                 wrong_survive_both=wrong_final,wrong_by_category=by_category,
-                nonweak_control_passed=nonweak,second_offset_byte28=offset,
-                key_model='synthetic_weak_Kpw_16_zero_with_odd_rotations',
-                actual_master_key=None,weak_subkey_fraction='2^-128',
+                nonweak_control_passed=nonweak,second_offset_byte2=offset,
+                key_model='synthetic_weak_Kpw_8_zero_with_odd_rotations',
+                actual_master_key=None,weak_subkey_fraction='2^-64',
                 weak_zero_indices=list(I_WEAK))
     vectors=None
     if trial==0:
@@ -449,8 +467,8 @@ def trial_run(trial,seed,random_wrong,singlebit,msb,carry,wrong_trials,full_msb_
                 equivalent_byte_candidate_sets=[g.tolist() for g in G],
                 derived_K4=reconstructed_k4.tobytes().hex(),
                 inverse_shiftrows_sets=[list(x) for x in I_SETS],
-                exact_input='F^-1(F(0) xor x*e7 xor y*e24)',
-                offset_in_byte28=offset,multisets=[])
+                exact_input='F^-1(F(0) xor x*e6 xor y*e7)',
+                offset_in_byte2=offset,multisets=[])
         for p,(states,c,preimage) in zip(ps,outcome):
             vectors['multisets'].append(dict(
                 P_0_0=p[0].tobytes().hex(),P_0_1=p[1].tobytes().hex(),
@@ -481,7 +499,7 @@ def main():
     parser.add_argument('--full-msb-trials',type=int,default=0)
     parser.add_argument('--nonweak-controls',type=int,default=10)
     parser.add_argument('--progress-every',type=int,default=50)
-    parser.add_argument('--out',default='KALYNA256_512_R6_RESULTS')
+    parser.add_argument('--out',default='KALYNA256_512_R6_ACTIVE67_RESULTS')
     parser.add_argument('--resume',action='store_true')
     args=parser.parse_args()
     if args.jobs<1 or args.trials<1 or args.progress_every<1 or any(getattr(args,s)<0 for s in
@@ -504,6 +522,13 @@ def main():
             reference=REFERENCE,reference_commit=REFERENCE_COMMIT,
             platform=platform.platform(),numpy=np.__version__,python=sys.version),indent=2))
     official=test_core()
+    for matrix in (MDS,IMDS):
+        for a,b in combinations(range(8),2):
+            assert gf(int(matrix[a,6]),int(matrix[b,7]))^gf(int(matrix[a,7]),int(matrix[b,6])), 'Singular active-column minor'
+    official['MDS_active_column_minors_checked']=28
+    official['IMDS_active_column_minors_checked']=28
+    p4_base()
+    official['appendix_B3_exact_byte_formula']='PASS'
     (out/'official_known_answer.json').write_text(json.dumps(official,indent=2))
     records={}
     if args.resume and (out/'trials.jsonl').exists():
@@ -513,7 +538,8 @@ def main():
     pending=[t for t in range(args.trials) if t not in records]
     t0=time.perf_counter()
     print('Kalyna-256/512 6R: 4R weak-prewhitening integral -> Algorithm4',flush=True)
-    print('P4=F^-1(F0 xor x*e7 xor y*e24), 2 x 65536 structures; Kpw zeros:',I_WEAK,flush=True)
+    print('P4=F^-1(F0 xor x*e6 xor y*e7), 2 x 65536 structures; Kpw zeros:',I_WEAK,flush=True)
+    print('8 zero Kpw bytes; admissible fraction 2^-64; safe offset byte 2',flush=True)
     print('Synthetic restricted subkeys, odd rotations exact, NO genuine-master-key claim',flush=True)
     print('Official full-cipher KAT: PASS.  Nominal 2^286 inverse S-box operations, NOT encryptions',flush=True)
     print(f'Completed {len(records)}, outstanding {len(pending)}',flush=True)
@@ -546,7 +572,7 @@ def main():
     cols=['trial','seed','chosen_plaintexts','distinguisher_passed','correct_K6_retained',
           'correct_equivalent_K5_retained','correct_K4_derived','extra_equivalent_K5_candidates',
           'equivalent_K5_candidate_count','wrong_full_K6_tested','wrong_pass_first','wrong_survive_both',
-          'nonweak_control_passed','second_offset_byte28']
+          'nonweak_control_passed','second_offset_byte2']
     with (out/'trial_summary.csv').open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=cols);writer.writeheader()
         for row in ordered:writer.writerow({s:row.get(s) for s in cols})
@@ -556,6 +582,9 @@ def main():
     controls=[q['nonweak_control_passed'] for q in ordered if q['nonweak_control_passed'] is not None]
     summ=dict(trials=len(ordered),distinguishers_passed=sum(q['distinguisher_passed'] for q in ordered),
         validated_multisets=2*len(ordered),balanced_bytes_per_multiset=32,
+        active_positions=list(ACTIVE),safe_offset_byte=OFFSET_BYTE,
+        MDS_2x2_minors_checked=28,X2_joint_pairs_checked_per_multiset=28,
+        appendix_B3_exact_byte_formula="PASS",master_key_schedule_compatibility="NOT ESTABLISHED",
         plaintexts_per_multiset=N,chosen_plaintexts_per_trial=DATA,
         correct_K6_retained=sum(q['correct_K6_retained'] for q in ordered),
         correct_equivalent_K5_retained=sum(q['correct_equivalent_K5_retained'] for q in ordered),
@@ -567,8 +596,8 @@ def main():
         wrong_survive_both=sum(q['wrong_survive_both'] for q in ordered),
         wrong_candidate_types=category_counts,
         nonweak_controls=len(controls),nonweak_controls_balanced_both=sum(controls),
-        zero_Kpw_positions=list(I_WEAK),weak_subkey_fraction='2^-128',
-        weak_subkey_values='2^128 of 2^256',
+        zero_Kpw_positions=list(I_WEAK),weak_subkey_fraction='2^-64',
+        weak_subkey_values='2^192 of 2^256',
         key_model='synthetic restricted subkeys, all odd/even rotations enforced',
         official_full_cipher_KAT='PASS',nominal_work='2^286 inverse S-box evaluations (NOT encryptions)',
         exhaustive_K6_enumeration=False,complete_master_key_recovered=False,
@@ -576,7 +605,7 @@ def main():
     (out/'summary.json').write_text(json.dumps(summ,indent=2))
     r='# Kalyna-256/512 — 4-round conditional integral -> 6-round Algorithm 4\n\n'
     r+='\n'.join(f'- **{k}**: {v}' for k,v in summ.items())
-    r+='''\n\n## Exact construction and weak-subkey restrictions\nP4(x,y)=F^-1(F(0) xor x e7 xor y e24). All 65536 (x,y) pairs.\nThe second multiset is a fixed nonzero e28 translation (disjoint, safe\nabove the input-dependent positions in its column). Kpw[i]=0 for\ni={0,1,6,7,12,13,14,15,18,19,20,21,24,25,26,27}.\nThe resulting 2^-128 admissible fraction applies to freely specified\npre-whitening SUBKEYS. This script does not show that a genuine 512-bit\nmaster-key expansion can satisfy the restriction.\n\n## Round convention and Algorithm 4\nThe distinguisher is checked at internal XOR-keyed X4, BEFORE modular\nterminal addition. The 6R model computes X5=F(X4) xor K5 and\nC=F(X5) boxplus K6 with four independent 64-bit modular additions.\nFor a guessed full K6, calculate U=F^-1(C boxminus K6) and Y=L^-1(U).\nFor every byte i retain ALL g such that xor S^-1_i(Y[i] xor g)=0 on\neach of TWO complete multisets. This is the exact Algorithm 4 test.\nThe correct tilde K5=L^-1(K5) is verified, and K4=RotR_88(K5)\nis checked. Equivalent-key survivors are retained, never forced unique.\n\n## Limits of evidence\nIncorrect full K6 guesses are sampled, not enumerated over 2^256.\nThe nominal work 2^286 counts Sbox inversions, plus uncounted\npreprocessing and Cartesian survivor combination; it is not full\nencryptions. This script does NOT recover a genuine master key or prove\nuniqueness. Nonweak controls test a sufficient condition only.\n'''
+    r+='''\n\n## Exact construction and weak-subkey restrictions\nP4(x,y)=F^-1(F(0) xor x e6 xor y e7). All 65536 (x,y) pairs.\nThe second multiset is a fixed nonzero e2 translation (disjoint, safe\nabove the input-dependent positions in its column). Kpw[i]=0 for\ni={0,1,14,15,20,21,26,27}.\nThe resulting 2^-64 admissible fraction applies to freely specified\npre-whitening SUBKEYS. This script does not show that a genuine 512-bit\nmaster-key expansion can satisfy the restriction.\n\n## Round convention and Algorithm 4\nThe distinguisher is checked at internal XOR-keyed X4, BEFORE modular\nterminal addition. The 6R model computes X5=F(X4) xor K5 and\nC=F(X5) boxplus K6 with four independent 64-bit modular additions.\nFor a guessed full K6, calculate U=F^-1(C boxminus K6) and Y=L^-1(U).\nFor every byte i retain ALL g such that xor S^-1_i(Y[i] xor g)=0 on\neach of TWO complete multisets. This is the exact Algorithm 4 test.\nThe correct tilde K5=L^-1(K5) is verified, and K4=RotR_88(K5)\nis checked. Equivalent-key survivor sets are retained for all surviving outer guesses. The Cartesian product is counted, not materialized. Reconstruction is checked for the true retained member, not claimed unique.\n\n## Limits of evidence\nIncorrect full K6 guesses are sampled, not enumerated over 2^256.\nThe nominal direct-test work 2^286 counts inverse S-box evaluations (without parity compression), plus uncounted\npreprocessing and Cartesian survivor combination; it is not full\nencryptions. This script does NOT recover a genuine master key or prove\nuniqueness. Nonweak controls test a sufficient condition only.\n'''
     (out/'REPORT.md').write_text(r)
     print('COMPLETE\n'+json.dumps(summ,indent=2),flush=True)
     return 0
