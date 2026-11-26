@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Kalyna-256/256: 3-round weak-prewhitening integral + 4-round key-column filtering.
+"""Kalyna-256/256: 3-round key-independent integral + 4-round key-column filtering.
 
 Standalone, independently checked against the designers' official
 Kalyna-256/256 full-round encryption vector. Research validation only.
 
 State: 4 x 8 bytes, column-major, little-endian 64-bit words.
-Round convention: K[0] modular pre-whitening (K[0,24]=0), XOR internal
+Round convention: K[0] unrestricted modular pre-whitening, XOR internal
 round keys, K[4] terminal modular addition in the 4-round reduced target.
-The distinguisher checks X3 BEFORE terminal addition. Two active input
-bytes at positions 7 and 24 enumerate the full product F_256^2.
+The distinguisher checks X3 after XOR with K[3], before the fourth round. Two active input
+bytes at positions 6 and 7 enumerate the full product F_256^2.
 
 The full 2^64 column keyspace is NEVER enumerated. All wrong-key tests
 are explicitly sampled/structured; master-key recovery is NOT claimed.
@@ -18,16 +18,14 @@ import argparse
 import csv
 import hashlib
 import json
-import os
 import platform
 import sys
 import time
-from collections import Counter
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 import numpy as np
 
-VERSION = '1.0-k256256-r4-weak3'
+VERSION = '2.0-k256256-r4-unrestricted-6-7'
 REFERENCE = 'https://github.com/Roman-Oliynykov/Kalyna-reference'
 REFERENCE_COMMIT = '22eafbcaf6635dc5e1f8a734b1f7c5ab84b5a5ea'
 
@@ -158,18 +156,6 @@ def expand_key(master):
     return keys
 
 
-def states_for(p,keys):
-    x0=add64(p,keys[0])
-    x1=F(x0)^keys[1]
-    x2=F(x1)^keys[2]
-    return x0,x1,x2
-
-
-def encrypt3(p,keys):
-    _,_,x2=states_for(p,keys)
-    return add64(F(x2),keys[3])
-
-
 def encrypt_full(p,keys):
     if keys.shape!=(15,32): raise ValueError('Full key schedule required')
     x=add64(p,keys[0])
@@ -205,52 +191,43 @@ def verify_primitives():
         if not np.array_equal(Finv(F(v)),v): raise AssertionError('F inverse failed')
         if not np.array_equal(sub64(add64(v,k),k),v): raise AssertionError('Modular subtraction failed')
         if not np.array_equal(even_from_odd(odd_from_even(k)),k): raise AssertionError('Key rotation failed')
+    minors = [int(GF[MDS[j,6],MDS[ell,7]]) ^ int(GF[MDS[j,7],MDS[ell,6]])
+              for j in range(8) for ell in range(j+1,8)]
+    if len(minors)!=28 or not all(minors):
+        raise AssertionError('MDS columns 6,7 minor check failed')
     assert set(I_SETS[0])=={0,1,14,15,20,21,26,27}
     return dict(official_reference='PASS',ciphertext=expected,key=key.tobytes().hex(),
                 plaintext=pt.tobytes().hex(),roundtrip='PASS',state_inversion='PASS',
-                terminal_64bit_subtraction='PASS',round_key_rotation='PASS')
+                terminal_64bit_subtraction='PASS',round_key_rotation='PASS',
+                mds_columns_6_7_nonsingular_minors=28)
 
 
 # ========================================================================
-#  Section 4.2 two-active-byte weak-key distinguisher -> 4R Algorithm 1
+#  Section 4.2 two-active-byte key-independent distinguisher -> 4R Algorithm 1
 # ========================================================================
-ACTIVE = (7, 24)
-WEAK_INDEX = 24
+ACTIVE = (6, 7)
 N = 1 << 16
 DATA = 2 * N
 N_COLS = 4
 
 
 def plaintext_structures(rng):
-    """Two disjoint full F_256 x F_256 products; ONLY Kpw[24]=0 required.
+    """Two disjoint full F_256 x F_256 products; unrestricted pre-whitening.
 
-    Inputs are P(x,y)=a xor x e7 xor y e24. The offset byte 4 is
+    Inputs are P(x,y)=a xor x e6 xor y e7. The offset byte 4 is
     constant in each structure and differs between structures.
     """
     a = rng.integers(0, 256, 32, dtype=np.uint8)
+    a[6] = 0
     a[7] = 0
-    a[24] = 0
     a[4] = 0
     p = np.tile(a, (N, 1))
-    p[:, 7] = np.repeat(np.arange(256, dtype=np.uint8), 256)
-    p[:, 24] = np.tile(np.arange(256, dtype=np.uint8), 256)
+    p[:, 6] = np.repeat(np.arange(256, dtype=np.uint8), 256)
+    p[:, 7] = np.tile(np.arange(256, dtype=np.uint8), 256)
     p2 = p.copy()
     offset = int(rng.integers(1, 256))
     p2[:, 4] = np.uint8(offset)
     return (p, p2), offset
-
-
-def synthetic_restricted_keys(rng):
-    """Enforce ONLY Kpw[24]=0 and authentic odd/even rotation identities.
-
-    These are synthetic reduced-model round keys, not a proof of
-    compatibility with a 256-bit Kalyna master-key expansion.
-    """
-    k = rng.integers(0, 256, (5, 32), dtype=np.uint8)
-    k[0, WEAK_INDEX] = 0
-    k[1] = odd_from_even(k[0])
-    k[3] = odd_from_even(k[2])
-    return k
 
 
 def encrypt4(p, k):
@@ -263,7 +240,9 @@ def encrypt4(p, k):
 
 
 def check_full_product_two_bytes(state, positions=ACTIVE):
-    """Check that (byte[7],byte[24]) enumerates F_256^2 exactly once."""
+    """Check that (byte[6],byte[7]) enumerates F_256^2 exactly once."""
+    if state.shape[0] != N:
+        return False
     u = state[:, positions[0]].astype(np.uint16)
     v = state[:, positions[1]].astype(np.uint16)
     pairs = u * 256 + v
@@ -272,7 +251,6 @@ def check_full_product_two_bytes(state, positions=ACTIVE):
 
 def check_distinguishers(ps, k):
     """Check strict input/full product, PW, 1R, 2R and 3R on BOTH multisets."""
-    if int(k[0,24]) != 0: raise AssertionError('Kpw[24] MUST equal zero')
     if not np.array_equal(k[1],odd_from_even(k[0])): raise AssertionError('K1 rotation')
     if not np.array_equal(k[3],odd_from_even(k[2])): raise AssertionError('K3 rotation')
     if int(ps[0][0,4])==int(ps[1][0,4]):
@@ -292,10 +270,11 @@ def check_distinguishers(ps, k):
         if np.any(x0[:,[i for i in range(32) if i not in ACTIVE]] !=
                   x0[0,[i for i in range(32) if i not in ACTIVE]]):
             raise AssertionError('Pre-whitening changed a constant input byte')
-        # All 8 first-round output bytes in column 3 must be individually All.
-        # The paired outputs at rows 0,7 must be jointly uniform by the MDS minor.
-        if not check_full_product_two_bytes(x1, positions=(24,31)):
-            raise AssertionError('First round pairwise joint uniformity failed')
+        # Verify all 28 pairs of output bytes in the fourth column.
+        for j in range(24,32):
+            for ell in range(j+1,32):
+                if not check_full_product_two_bytes(x1, positions=(j,ell)):
+                    raise AssertionError(('First round pairwise joint uniformity failed', j, ell))
         if np.any(x1[:, :24] != x1[0, :24]):
             raise AssertionError('Unexpected first-round activity outside column 3')
         # Every second-round byte must take each value exactly 256 times.
@@ -370,9 +349,10 @@ def candidate_columns(keycol,rng,trial,j,random_wrong,single_bit_wrong,msb_diffe
     return [np.frombuffer(x,dtype=np.uint8).copy() for x in sorted(observed)]
 
 
-def run_trial(trial,seed,random_wrong,single_bit_wrong,msb_differences,full_msb_trials,nonweak_controls):
+def run_trial(trial,seed,random_wrong,single_bit_wrong,msb_differences,full_msb_trials):
     rng=np.random.default_rng(np.random.SeedSequence([seed,trial,2562564]))
-    k=synthetic_restricted_keys(rng)
+    master=rng.integers(0,256,32,dtype=np.uint8)
+    k=expand_key(master)
     ps,offset=plaintext_structures(rng)
     both,counts=check_distinguishers(ps,k)
     cts=[ct for _,ct in both]
@@ -389,21 +369,9 @@ def run_trial(trial,seed,random_wrong,single_bit_wrong,msb_differences,full_msb_
         tested+=ntested;wrong_first+=passed0;wrong_both+=len(surviving)
         for v in surviving:
             wrong_survivors.append(dict(trial=trial,column=j,guess=bytes(v).hex(),true_key=keycol.tobytes().hex()))
-    control_balance=None
-    if trial<nonweak_controls:
-        kw=k.copy();kw[0,24]=np.uint8(1+int(rng.integers(0,255)))
-        kw[1]=odd_from_even(kw[0])
-        # A key outside the sufficient weak condition is NOT mathematically
-        # required to fail. Record its outcome, without asserting failure.
-        s=[]
-        for p in ps:
-            x0=add64(p,kw[0]);x1=F(x0)^kw[1]
-            x2=F(x1)^kw[2];x3=F(x2)^kw[3]
-            s.append(bool(np.all(xorsum(x3)==0)))
-        control_balance=bool(all(s))
-    record=dict(trial=trial,seed=seed,model='synthetic_Kpw24_zero_rotated_odd_subkeys',
-                key_restriction='Kpw[24] == 0; all other pre-whitening bytes unrestricted',
-                actual_master_key=None,weak_subkey_fraction='2^-8',
+    record=dict(trial=trial,seed=seed,model='genuine_Kalyna256_256_master_key_expansion',
+                key_restriction='none',
+                actual_master_key=master.tobytes().hex(),subkey_fraction='1',
                 plaintexts_per_multiset=N,chosen_plaintexts=DATA,
                 distinguisher_passed=True,balanced_bytes_per_multiset=counts,
                 correct_K4_columns_retained=correct_retained,
@@ -411,12 +379,12 @@ def run_trial(trial,seed,random_wrong,single_bit_wrong,msb_differences,full_msb_
                 wrong_pass_first_multiset=wrong_first,
                 wrong_survive_both_multisets=wrong_both,
                 second_structure_offset_byte4=offset,
-                nonweak_control_balanced_both=control_balance,
                 exhaustive_msb_differences=exhaustive_msb)
     vectors=None
     if trial==0:
         vectors=dict(official_full_cipher_KAT=verify_primitives(),
                      model=record['model'],restriction=record['key_restriction'],
+                     master_key=master.tobytes().hex(),
                      round_keys=[z.tobytes().hex() for z in k],
                      index_sets=I_SETS,active_positions=list(ACTIVE),offset_byte4=offset,
                      multisets=[])
@@ -446,17 +414,16 @@ def main():
     p.add_argument('--single-bit-wrong',type=int,default=2)
     p.add_argument('--msb-differences',type=int,default=2)
     p.add_argument('--full-msb-trials',type=int,default=0)
-    p.add_argument('--nonweak-controls',type=int,default=50)
     p.add_argument('--progress-every',type=int,default=25)
-    p.add_argument('--out',default='KALYNA256_256_R4_RESULTS')
+    p.add_argument('--out',default='KALYNA256_256_R4_UNRESTRICTED_RESULTS')
     p.add_argument('--resume',action='store_true')
     args=p.parse_args()
-    if args.trials<1 or args.jobs<1 or args.full_msb_trials<0 or args.nonweak_controls<0 or args.progress_every<1:
+    if args.trials<1 or args.jobs<1 or args.full_msb_trials<0 or args.progress_every<1 or min(args.random_wrong,args.single_bit_wrong,args.msb_differences)<0:
         p.error('Invalid count or jobs value')
     out=Path(args.out);out.mkdir(parents=True,exist_ok=True)
     options=dict(trials=args.trials,seed=args.seed,random_wrong=args.random_wrong,
                  single_bit_wrong=args.single_bit_wrong,msb_differences=args.msb_differences,
-                 full_msb_trials=args.full_msb_trials,nonweak_controls=args.nonweak_controls)
+                 full_msb_trials=args.full_msb_trials)
     source_hash=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     sf=out/'settings.json'
     if args.resume and sf.exists():
@@ -477,10 +444,10 @@ def main():
                 record=json.loads(line);completed[record['trial']]=record
     pending=[i for i in range(args.trials) if i not in completed]
     tstart=time.perf_counter()
-    print('Kalyna-256/256: 3R weak-Kpw integral -> 4R key candidate filtering',flush=True)
-    print('Official 256/256 KAT: PASS; 4 columns; NO genuine master-key compatibility asserted',flush=True)
-    print('Weak-key condition: Kpw[24] = 0 ONLY; weak subkey fraction 2^-8',flush=True)
-    print('Input: a xor x*e7 xor y*e24, full x,y in F_256, 2 x 65536 texts',flush=True)
+    print('Kalyna-256/256: 3R key-independent integral -> 4R key candidate filtering',flush=True)
+    print('Official 256/256 KAT: PASS; 4 columns; genuine expanded master keys',flush=True)
+    print('Key restrictions: NONE; admissible subkey fraction 1',flush=True)
+    print('Input: a xor x*e6 xor y*e7, full x,y in F_256, 2 x 65536 texts',flush=True)
     print('Algorithms: 1 only (even terminal round R=4); 64-bit modular subtraction',flush=True)
     print('Inverse-SR index sets:',I_SETS,flush=True)
     print(f'Resuming: {len(completed)} completed, {len(pending)} remaining',flush=True)
@@ -504,38 +471,37 @@ def main():
     if args.jobs==1:
         for trial in pending:
             save(run_trial(trial,args.seed,args.random_wrong,args.single_bit_wrong,
-                           args.msb_differences,args.full_msb_trials,args.nonweak_controls))
+                           args.msb_differences,args.full_msb_trials))
     else:
         with ProcessPoolExecutor(max_workers=args.jobs) as exe:
             futures={exe.submit(run_trial,trial,args.seed,args.random_wrong,args.single_bit_wrong,
-                                args.msb_differences,args.full_msb_trials,args.nonweak_controls):trial
+                                args.msb_differences,args.full_msb_trials):trial
                      for trial in pending}
             for future in as_completed(futures): save(future.result())
     ordered=[completed[t] for t in range(args.trials)]
     assert all(x['distinguisher_passed'] and x['correct_K4_columns_retained']==4 for x in ordered)
-    columns=['trial','seed','model','weak_subkey_fraction','chosen_plaintexts',
+    columns=['trial','seed','model','actual_master_key','subkey_fraction','chosen_plaintexts',
         'distinguisher_passed','correct_K4_columns_retained','wrong_column_candidates_tested',
         'wrong_pass_first_multiset','wrong_survive_both_multisets','second_structure_offset_byte4',
-        'nonweak_control_balanced_both','exhaustive_msb_differences']
+        'exhaustive_msb_differences']
     with (out/'trial_summary.csv').open('w',newline='') as f:
         writer=csv.DictWriter(f,fieldnames=columns);writer.writeheader()
         for rec in ordered:writer.writerow({x:rec.get(x) for x in columns})
-    nonweak=[x['nonweak_control_balanced_both'] for x in ordered if x['nonweak_control_balanced_both'] is not None]
     total=dict(trials=args.trials,distinguishers_passed=sum(x['distinguisher_passed'] for x in ordered),
         valid_multisets=2*args.trials,plaintexts_per_multiset=N,chosen_plaintexts=DATA,
-        balanced_bytes_per_multiset=32,weak_subkey_fraction='2^-8',weak_subkey_count='2^248',
+        active_positions=list(ACTIVE),key_restriction='none',
+        balanced_bytes_per_multiset=32,subkey_fraction='1',admissible_subkey_count='2^256',
         correct_K4_columns_retained=sum(x['correct_K4_columns_retained'] for x in ordered),
         correct_K4_columns_expected=4*args.trials,
         wrong_column_candidates_tested=sum(x['wrong_column_candidates_tested'] for x in ordered),
         wrong_pass_first_multiset=sum(x['wrong_pass_first_multiset'] for x in ordered),
         wrong_survive_both_multisets=sum(x['wrong_survive_both_multisets'] for x in ordered),
-        nonweak_controls=len(nonweak),nonweak_controls_balanced_both=sum(nonweak),
         nominal_exhaustive_work='2^83 64-bit column partial-decryption operations',
-        source_sha256=source_hash,master_key_schedule_compatibility='NOT ESTABLISHED',
+        source_sha256=source_hash,master_key_schedule_compatibility='GENUINE EXPANDED KEYS IN ALL TRIALS',
         exhaustive_2power64_column_search=False,full_master_key_recovered=False,
         wall_seconds_this_session=round(time.perf_counter()-tstart,3))
     (out/'summary.json').write_text(json.dumps(total,indent=2))
-    report="""# Kalyna-256/256 — 3-round weak-key distinguisher -> 4-round candidate filtering
+    report="""# Kalyna-256/256 — 3-round key-independent distinguisher -> 4-round candidate filtering
 
 """
     report+='\n'.join(f'- **{k}**: {v}' for k,v in total.items())
@@ -544,12 +510,15 @@ def main():
 ## Referee-focused scope
 The updated manuscript Table 2 row is (Kalyna-256/256, R=4, 2^17 chosen
 plaintexts, 2^83 nominal 64-bit column partial decryptions, subkey
-fraction 2^-8, Algorithm 1). The input structure is the full F_256^2
-product {a xor x e7 xor y e24}; each multiset contains 65536 texts.
-Weak pre-whitening restriction: Kpw[24]=0, precisely one byte; the
-other 31 bytes unrestricted. Every *internal* subkey is otherwise
-unrestricted. The model enforces valid adjacent odd/even rotation of
-synthetic round keys; it does not claim compatible 256-bit master keys.
+fraction 1, Algorithm 1). The input structure is the full F_256^2
+product {a xor x e6 xor y e7}; each multiset contains 65536 texts.
+The two active bytes form the upper 16-bit word of the first column.
+The lower six constant bytes produce a fixed carry into that word;
+modular addition translates the full word modulo 2^16, preserving the
+complete product for every fixed pre-whitening subkey. All 28 pairs of
+first-round output bytes in column 3 are tested for joint uniformity.
+No key bytes are fixed, no master keys are rejected or modified.
+All trial subkeys come from the genuine Kalyna-256/256 key schedule.
 The integral is verified at X3, after the third XOR internal-round
 key and before terminal modular addition. 4R ciphertext C=F(X3) boxplus K4.
 The filter guesses each K4 64-bit column, subtracts modulo 2^64
@@ -561,9 +530,8 @@ The terminal index R=4 is EVEN: Algorithm 2 does not derive K3 from K4.
 The nominal 2^83 work estimate is NOT full-encryption work, and is
 not performed by this program. No uniqueness or master-key recovery is
 claimed. Incorrect subkeys are a finite structured/sampled experiment.
-Weak-subkey fraction 2^-8 need not equal fraction of genuine master keys.
-The nonweak controls quantify failure/success under modified Kpw[24];
-the restriction is sufficient, not asserted to be necessary.
+No weak-key condition is imposed; the construction applies to every master key.
+The experiment tests correct-candidate retention, not exhaustive key recovery.
 """
     (out/'REPORT.md').write_text(report)
     print('COMPLETE',json.dumps(total,indent=2),flush=True)
