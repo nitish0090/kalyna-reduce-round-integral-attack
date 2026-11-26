@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Kalyna-256/512: 3-round two-active-byte integral + 5-round Algorithm 3.
 
-Weak pre-whitening condition: ONLY expanded K[0,24] == 0. Exact inputs are
-P(x,y)=a xor x*e7 xor y*e24 (full GF(256)^2 product); two disjoint sets.
-Every trial samples a genuine 512-bit master key conditioned on this byte,
+No pre-whitening key restriction. Exact inputs are
+P(x,y)=a xor x*e6 xor y*e7 (full GF(256)^2 product); two disjoint sets.
+Every trial samples an unrestricted genuine 512-bit master key,
 expands it with the validated official key schedule, and verifies balance of
 all 32 bytes at internal X3 BEFORE modular post-whitening. The 5-round target
 has terminal addition modulo 2^64 and an XOR-keyed internal penultimate round.
@@ -24,7 +24,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 import numpy as np
 
-VERSION = '1.0-256512-r5-genuine-weak3'
+VERSION = '2.0-256512-r5-genuine-active67'
 REFERENCE = 'https://github.com/Roman-Oliynykov/Kalyna-reference'
 REFERENCE_COMMIT = '22eafbcaf6635dc5e1f8a734b1f7c5ab84b5a5ea'
 
@@ -165,7 +165,7 @@ def expand_key(master):
 
 
 # ============================================================================
-# Official vectors, genuine encryption and two-round distinguisher
+# Official vectors, genuine encryption and three-round distinguisher
 # ============================================================================
 TEST_CT = '606990e9e6b7b67a4bd6d893d72268b78e02c83c3cd7e102fd2e74a8fdfe5dd9'
 def xorsum(v):return np.bitwise_xor.reduce(a8(v),axis=-2)
@@ -216,8 +216,7 @@ def test_core():
 # =============================================================================
 # Section 4.2 (two active bytes) -> Section 6 Algorithm 3, R = 5
 # =============================================================================
-ACTIVE = (7,24)
-WEAK_INDEX = 24
+ACTIVE = (6,7)
 N = 1 << 16
 X_VALUES = np.repeat(np.arange(256,dtype=np.uint8),256)
 Y_VALUES = np.tile(np.arange(256,dtype=np.uint8),256)
@@ -230,56 +229,17 @@ def full_product_at(state,i,j):
     return bool(len(pairs)==N and np.all(np.bincount(pairs,minlength=N)==1))
 
 
-def initial_subkey_for_masters(masters):
-    """Compute genuine K0 for *batched* 512-bit candidate master keys.
-
-    This is just the first even-key-schedule output; each successful master is
-    subsequently expanded independently by expand_key and K0 is rechecked.
-    """
-    if masters.ndim!=2 or masters.shape[1]!=64:raise ValueError('Batch shape')
-    size=masters.shape[0]
-    s=np.zeros((size,32),dtype=np.uint8);s[:,0]=13 # nb=4,nk=8 => nb+nk+1
-    kt=F(add64(F(F(add64(s,masters[:,:32]))^masters[:,32:]),masters[:,:32]))
-    tmv=np.tile(np.array([1,0,1,0,1,0,1,0],dtype=np.uint8),4)
-    tmp=add64(kt,tmv)
-    return add64(F(F(add64(masters[:,:32],tmp))^tmp),tmp)
-
-
-def genuine_conditioned_keys(rng,batch_size=512):
-    """Rejection sample genuine master keys until actual expanded Kpw[24]=0.
-
-    Restricted *expanded subkey* sampling is not equivalent to a uniform
-    sample of the full master-key distribution. Record the number of rejects.
-    """
-    tested=0
-    while tested < 1_000_000:
-        m=rng.integers(0,256,(batch_size,64),dtype=np.uint8)
-        k0=initial_subkey_for_masters(m)
-        inds=np.flatnonzero(k0[:,WEAK_INDEX]==0)
-        if len(inds):
-            index=int(inds[0]); tested+=index+1
-            master=m[index].copy()
-            keys=expand_key(master)
-            if not np.array_equal(keys[0],k0[index]) or int(keys[0,WEAK_INDEX])!=0:
-                raise AssertionError('Batch vs full genuine key schedule disagrees')
-            return master,keys,tested
-        tested+=batch_size
-    raise RuntimeError('Could not sample genuine weak pre-whitening master')
-
-
-def nonweak_genuine_keys(rng):
-    """An unmodified genuine master whose K0[24] is nonzero."""
-    while True:
-        master=rng.integers(0,256,64,dtype=np.uint8)
-        keys=expand_key(master)
-        if int(keys[0,24])!=0:return master,keys
+def genuine_keys(rng):
+    """Sample one unrestricted 512-bit master and expand without modification."""
+    master=rng.integers(0,256,64,dtype=np.uint8)
+    return master,expand_key(master)
 
 
 def plaintext_structures(rng):
     """Two disjoint full GF(256)^2 products, with distinct byte-4 constant."""
     a=rng.integers(0,256,32,dtype=np.uint8)
-    a[7]=0;a[24]=0;a[4]=0
-    p=np.tile(a,(N,1));p[:,7]=X_VALUES;p[:,24]=Y_VALUES
+    a[6]=0;a[7]=0;a[4]=0
+    p=np.tile(a,(N,1));p[:,6]=X_VALUES;p[:,7]=Y_VALUES
     offset=int(rng.integers(1,256))
     q=p.copy();q[:,4]=np.uint8(offset)
     return [p,q],offset
@@ -299,24 +259,27 @@ def forward_3dist_5target(p,k):
 
 
 def validate_structure_and_distinguisher(structures,keys,strict=True):
-    if int(keys[0,24])!=0:raise AssertionError('Expected Kpw[24]=0')
+    if not np.array_equal(keys[1],odd_from_even(keys[0])):raise AssertionError('K1 rotation')
     if not np.array_equal(keys[3],odd_from_even(keys[2])):raise AssertionError('K3 rotation')
     if not np.array_equal(keys[5],odd_from_even(keys[4])):raise AssertionError('K5 rotation')
     if structures[0][0,4]==structures[1][0,4]:raise AssertionError('Sets not disjoint')
     result=[]
     for p in structures:
         if p.shape!=(N,32):raise AssertionError('Wrong multiset size')
-        if not full_product_at(p,7,24):raise AssertionError('Input is not full 2-byte product')
+        if not full_product_at(p,*ACTIVE):raise AssertionError('Input is not full 2-byte product')
         if strict and np.any(p[:,[i for i in range(32) if i not in ACTIVE]]!=p[0,[i for i in range(32) if i not in ACTIVE]]):
             raise AssertionError('Plaintext nonactive bytes not constant')
         states,c=forward_3dist_5target(p,keys)
         x0,x1,x2,x3,x4=states
-        if not full_product_at(x0,7,24):raise AssertionError('PW destroyed full product')
+        if not full_product_at(x0,*ACTIVE):raise AssertionError('PW destroyed full product')
         if strict:
             if np.any(x0[:,[i for i in range(32) if i not in ACTIVE]]!=x0[0,[i for i in range(32) if i not in ACTIVE]]):
                 raise AssertionError('PW introduced unexpected active bytes')
             if np.any(x1[:,:24]!=x1[0,:24]):raise AssertionError('First round active outside final column')
-            if not full_product_at(x1,24,31):raise AssertionError('MDS first-round pair not jointly All')
+            for i in range(24,32):
+                for j in range(i+1,32):
+                    if not full_product_at(x1,i,j):
+                        raise AssertionError(('X1 pairwise uniformity failed',i,j))
             # A at every byte X2: exact value multiplicity, not an informal label.
             for i in range(32):
                 if not np.all(np.bincount(x2[:,i],minlength=256)==256):
@@ -380,9 +343,9 @@ def choose_wrong_k5(known,rng,trial,random_wrong=1,structured=False,full_msb=Fal
     return [(np.frombuffer(k,dtype=np.uint8).copy(),name) for k,name in sorted(answer.items())]
 
 
-def run_trial(trial,seed,random_wrong,structured_wrong_trials,full_msb_trials,nonweak_controls):
+def run_trial(trial,seed,random_wrong,structured_wrong_trials,full_msb_trials):
     rng=np.random.default_rng(np.random.SeedSequence([seed,trial,2565125]))
-    master,keys,tries=genuine_conditioned_keys(rng)
+    master,keys=genuine_keys(rng)
     ps,offset=plaintext_structures(rng)
     outcomes=validate_structure_and_distinguisher(ps,keys,strict=True)
     cts=[x[1] for x in outcomes]
@@ -404,31 +367,21 @@ def run_trial(trial,seed,random_wrong,structured_wrong_trials,full_msb_trials,no
         wrong_both+=yes
         wrong_by_type[kind]=wrong_by_type.get(kind,0)+1
         if yes:survivors.append(dict(trial=trial,guess_k5_hex=g.tobytes().hex(),kind=kind))
-    control=None
-    if trial<nonweak_controls:
-        control_master,ctrl=nonweak_genuine_keys(rng)
-        sums=[]
-        for p in ps:
-            x0=add64(p,ctrl[0]);x1=F(x0)^ctrl[1];x2=F(x1)^ctrl[2];x3=F(x2)^ctrl[3]
-            sums.append(xorsum(x3))
-        # Not every nonweak key must fail. Record observed outcome only.
-        control=bool(all(not np.any(s) for s in sums))
-    rec=dict(trial=trial,seed=seed,model='genuine_512bit_master_conditioned_Kpw24_zero',
-             master_key_hex=master.tobytes().hex(),master_candidates_examined=tries,
-             weak_condition='expanded K0[24]==0 (only restricted byte)',
-             weak_prewhitening_subkey_fraction='2^-8',no_initial_prewhitening=False,
+    rec=dict(trial=trial,seed=seed,model='genuine_unrestricted_512bit_master',
+             master_key_hex=master.tobytes().hex(),master_candidates_examined=1,
+             key_restriction='none',
+             prewhitening_subkey_fraction='1',no_initial_prewhitening=False,
              plaintexts_per_multiset=N,multisets=2,chosen_plaintexts=2*N,
              distin_3round_passed=True,balanced_bytes=32,
              correct_K5_retained=True,correct_K4_derived=True,
              wrong_full_K5_tested=len(wrong),wrong_pass_first_multiset=wrong_first,
              wrong_survive_both_multisets=wrong_both,
              wrong_by_category=wrong_by_type,offset_byte4=offset,
-             exhaustive_msb_guesses_on_trial=trial<full_msb_trials,
-             nonweak_control_balanced_both=control)
+             exhaustive_msb_guesses_on_trial=trial<full_msb_trials)
     vectors=None
     if trial==0:
         vectors=dict(case='Kalyna-256/512, 3R two active bytes -> 5R Algorithm 3',
-                     key_model=rec['model'],weak_condition=rec['weak_condition'],
+                     key_model=rec['model'],key_restriction=rec['key_restriction'],
                      official_test_vector=test_core(),
                      master_key_hex=master.tobytes().hex(),
                      all_first_six_subkeys=[z.tobytes().hex() for z in keys[:6]],
@@ -465,17 +418,16 @@ def main():
                    help='First N trials add single-bit, MSB and modular-carry guesses')
     p.add_argument('--full-msb-trials',type=int,default=0,
                    help='First N trials exhaust all 255 MSB byte deltas per column (costly)')
-    p.add_argument('--nonweak-controls',type=int,default=20)
     p.add_argument('--progress-every',type=int,default=25)
-    p.add_argument('--out',default='KALYNA256_512_R5_RESULTS')
+    p.add_argument('--out',default='KALYNA256_512_R5_ACTIVE67_RESULTS')
     p.add_argument('--resume',action='store_true')
     args=p.parse_args()
-    if any(getattr(args,n)<0 for n in ('trials','seed','random_wrong','structured_wrong_trials','full_msb_trials','nonweak_controls')) or args.trials<1 or args.jobs<1 or args.progress_every<1:
+    if any(getattr(args,n)<0 for n in ('trials','seed','random_wrong','structured_wrong_trials','full_msb_trials')) or args.trials<1 or args.jobs<1 or args.progress_every<1:
         p.error('Invalid trial or experiment parameters')
     dest=Path(args.out)
     dest.mkdir(parents=True,exist_ok=True)
     source_hash=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    spec={x:getattr(args,x) for x in ('trials','seed','random_wrong','structured_wrong_trials','full_msb_trials','nonweak_controls')}
+    spec={x:getattr(args,x) for x in ('trials','seed','random_wrong','structured_wrong_trials','full_msb_trials')}
     cfg=dest/'settings.json'
     if args.resume:
         if not cfg.exists():raise FileNotFoundError('--resume requires existing settings.json')
@@ -492,11 +444,8 @@ def main():
     # Check all 28 nonzero GF(256) MDS 2x2 minors for the active rows.
     for a in range(8):
         for b in range(a+1,8):
-            determinant=gf(int(MDS[a,0]),int(MDS[b,7])) ^ gf(int(MDS[a,7]),int(MDS[b,0]))
-            if determinant==0:raise AssertionError(('MDS two-active minor singular',a,b))
-    # Independently check batched conditional selection for the published key too.
-    fixed=np.arange(64,dtype=np.uint8)
-    assert np.array_equal(initial_subkey_for_masters(fixed[None,:])[0],expand_key(fixed)[0])
+            determinant=gf(int(MDS[a,6]),int(MDS[b,7])) ^ gf(int(MDS[a,7]),int(MDS[b,6]))
+            if determinant==0:raise AssertionError(('MDS columns 6,7 minor singular',a,b))
     (dest/'official_known_answer.json').write_text(json.dumps(known,indent=2))
     records={}
     if args.resume and (dest/'trials.jsonl').exists():
@@ -506,7 +455,8 @@ def main():
     pending=[t for t in range(args.trials) if t not in records]
     tic=time.perf_counter()
     print('Kalyna-256/512 3R two-active integral -> 5R Algorithm3',flush=True)
-    print(f'Official 256/512 full encryption KAT PASS | model=GENUINE conditioned 512-bit masters Kpw[24]==0 | target={args.trials} trials',flush=True)
+    print(f'Official 256/512 full encryption KAT PASS | model=GENUINE unrestricted 512-bit masters | target={args.trials} trials',flush=True)
+    print('Active positions (6, 7); key restriction NONE; subkey fraction 1',flush=True)
     print(f'Data/trial=2 * 2^16=131072, 32 balanced internal bytes; remaining={len(pending)}',flush=True)
     def save(result):
         rec,wrong,vectors=result
@@ -528,11 +478,11 @@ def main():
     if args.jobs==1:
         for t in pending:
             save(run_trial(t,args.seed,args.random_wrong,args.structured_wrong_trials,
-                           args.full_msb_trials,args.nonweak_controls))
+                           args.full_msb_trials))
     else:
         with ProcessPoolExecutor(max_workers=args.jobs) as ex:
             futs=[ex.submit(run_trial,t,args.seed,args.random_wrong,args.structured_wrong_trials,
-                            args.full_msb_trials,args.nonweak_controls) for t in pending]
+                            args.full_msb_trials) for t in pending]
             for fut in as_completed(futs):save(fut.result())
     if len(records)!=args.trials:raise AssertionError('Incomplete campaign')
     rows=[records[t] for t in sorted(records)]
@@ -540,17 +490,16 @@ def main():
         raise AssertionError('Missing correct key or integral')
     fields=['trial','master_candidates_examined','chosen_plaintexts','distin_3round_passed','balanced_bytes',
             'correct_K5_retained','correct_K4_derived','wrong_full_K5_tested','wrong_pass_first_multiset',
-            'wrong_survive_both_multisets','offset_byte4','nonweak_control_balanced_both']
+            'wrong_survive_both_multisets','offset_byte4']
     with (dest/'trial_summary.csv').open('w',newline='') as f:
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
         for r in rows:w.writerow({k:r[k] for k in fields})
     aggregate={}
     for r in rows:
         for cat,c in r['wrong_by_category'].items():aggregate[cat]=aggregate.get(cat,0)+c
-    controls=[r['nonweak_control_balanced_both'] for r in rows if r['nonweak_control_balanced_both'] is not None]
     totals=dict(trials=len(rows),distinguishers_passed=sum(r['distin_3round_passed'] for r in rows),
                 validated_multisets=2*len(rows),balanced_bytes_per_multiset=32,
-                genuine_512bit_master_keys_conditioned_Kpw24_zero=len(rows),
+                genuine_unrestricted_512bit_master_keys=len(rows),
                 master_key_candidates_examined=sum(r['master_candidates_examined'] for r in rows),
                 correct_K5_retained=sum(r['correct_K5_retained'] for r in rows),
                 correct_K4_derived_by_RotR88=sum(r['correct_K4_derived'] for r in rows),
@@ -558,10 +507,10 @@ def main():
                 wrong_pass_first_multiset=sum(r['wrong_pass_first_multiset'] for r in rows),
                 wrong_survive_both_multisets=sum(r['wrong_survive_both_multisets'] for r in rows),
                 wrong_by_category=aggregate,
-                nonweak_control_trials=len(controls),nonweak_control_balanced_both=sum(controls),
-                data_per_trial=2*N,MDS_2x2_minors_checked=28,underlying_integral='3-round two active bytes {7,24}',
-                required_weak_subkey_condition='Expanded genuine pre-whitening K0[24]==0 only',
-                nominal_subkey_fraction='2^-8',
+                data_per_trial=2*N,MDS_2x2_minors_checked=28,X1_joint_pairs_checked_per_multiset=28,underlying_integral='3-round key-independent two active bytes {6,7}',
+                active_positions=list(ACTIVE),key_restriction='none',
+                nominal_subkey_fraction='1',admissible_subkey_count='2^256',
+                master_key_schedule_compatibility='GENUINE EXPANDED KEYS IN ALL TRIALS',
                 nominal_work='2^273 full-state two-round partial decryptions (NOT encryptions)',
                 exhaustive_2pow256_search=False,complete_master_key_recovered=False,
                 SHA256_python_source=source_hash,wall_seconds_current_session=round(time.perf_counter()-tic,3))
@@ -572,15 +521,15 @@ def main():
 
 ## Scope and model
 The 256-bit state is four 64-bit little-endian columns. The 512-bit
-master key is uniformly sampled and rejected unless the genuine expanded
-pre-whitening K0[24] equals zero. This is a conditional weak-key set in the
-*actual master-key schedule*, not a synthetic independently chosen round key.
-Only the one byte K0[24] is restricted; there is no removal of whitening.
-The observed selection frequency is recorded, not conflated with the formal
-fraction 2^-8 of pre-whitening-subkey values.
+master key is sampled without any restriction and expanded using the genuine
+key schedule. No expanded subkey bytes are forced to zero or changed.
+The admissible pre-whitening-subkey fraction is 1. Modular pre-whitening
+is retained; the upper 16-bit word in the first column is fully active.
+Its addition with a fixed subkey word and fixed incoming carry preserves
+the complete product structure. All other bytes remain constant.
 
 ## Chosen plaintexts and internal-state convention
-P_l(x,y) = a_l xor x e7 xor y e24, with the 32-byte constants a_l[7]=a_l[24]=0,
+P_l(x,y) = a_l xor x e6 xor y e7, with the 32-byte constants a_l[6]=a_l[7]=0,
 and two disjoint sets with distinct byte-4 constants. Each set contains all
 256^2 plaintexts. The chosen-plaintext count is 2*65536=131072=2^17.
 The 3-round balancedness holds at internal X3=F(X2) xor K3 before the
