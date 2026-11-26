@@ -5,10 +5,10 @@ Standalone, independently checked against the designers' official
 Kalyna-256/256 full-round encryption vector. Research validation only.
 
 State: 4 x 8 bytes, column-major, little-endian 64-bit words.
-Round convention: K[0] modular pre-whitening (16 restricted zero bytes),
+Round convention: K[0] modular pre-whitening (8 restricted zero bytes),
 XOR internal keys K[1]..K[4], and terminal addition K[5] mod 2^64.
 The 4-round distinguisher checks X4 BEFORE the fifth-round addition.
-Plaintexts are F^{-1}(F(0) xor x*e7 xor y*e24), full F_256^2.
+Plaintexts are F^{-1}(F(0) xor x*e6 xor y*e7), full F_256^2.
 
 The full 2^64 column keyspace is NEVER enumerated. All wrong-key tests
 are explicitly sampled/structured; master-key recovery is NOT claimed.
@@ -27,7 +27,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 import numpy as np
 
-VERSION = '1.0-k256256-r5-weak4'
+VERSION = '2.0-k256256-r5-weak4-active6-7'
 REFERENCE = 'https://github.com/Roman-Oliynykov/Kalyna-reference'
 REFERENCE_COMMIT = '22eafbcaf6635dc5e1f8a734b1f7c5ab84b5a5ea'
 
@@ -206,41 +206,58 @@ def verify_primitives():
         if not np.array_equal(sub64(add64(v,k),k),v): raise AssertionError('Modular subtraction failed')
         if not np.array_equal(even_from_odd(odd_from_even(k)),k): raise AssertionError('Key rotation failed')
     assert set(I_SETS[0])=={0,1,14,15,20,21,26,27}
+    for matrix in (MDS, IMDS):
+        for r in range(8):
+            for t in range(r+1,8):
+                if not (GF[matrix[r,6],matrix[t,7]] ^ GF[matrix[r,7],matrix[t,6]]):
+                    raise AssertionError('Noninvertible 2x2 minor for columns 6,7')
     return dict(official_reference='PASS',ciphertext=expected,key=key.tobytes().hex(),
                 plaintext=pt.tobytes().hex(),roundtrip='PASS',state_inversion='PASS',
-                terminal_64bit_subtraction='PASS',round_key_rotation='PASS')
+                terminal_64bit_subtraction='PASS',round_key_rotation='PASS',
+                MDS_and_inverse_28_minors_columns_6_7='PASS')
 
 
 # ============================================================================
 # Section 4.3 backward-extended two-active-byte 4R integral -> 5R (Algorithm 2)
 # ============================================================================
-# These positions are the union of the x- and y-dependent input-byte supports
-# of the exact inverse-defined plaintext multiset in the UPDATED manuscript.
-I_X = (0, 1, 14, 15, 20, 21, 26, 27)
-I_Y = (6, 7, 12, 13, 18, 19, 24, 25)
-I_WEAK = tuple(sorted(I_X + I_Y))
-ACTIVE = (7,24)
+# Both active bytes belong to column 0; their inverse supports coincide.
+I_WEAK = (0, 1, 14, 15, 20, 21, 26, 27)
+ACTIVE = (6, 7)
 N = 1 << 16
 DATA = 2*N
-OFFSET_BYTE = 28      # In column 3, strictly above all variable rows 0..3
+OFFSET_BYTE = 2       # In column 0, strictly above variable rows 0 and 1
 N_COLS = 4
 
 
 @lru_cache(maxsize=1)
 def p4_base():
-    """The EXACT F^{-1}(F(0) xor x*e7 xor y*e24) full 65536-set.
+    """The EXACT F^{-1}(F(0) xor x*e6 xor y*e7) full 65536-set.
 
     The whole array is cached per worker process. No plaintext construction
     depends on unknown encryption subkeys.
     """
     zero=np.zeros(32,dtype=np.uint8)
     u=np.broadcast_to(F(zero),(N,32)).copy()
-    u[:,7] ^= np.repeat(np.arange(256,dtype=np.uint8),256)
-    u[:,24] ^= np.tile(np.arange(256,dtype=np.uint8),256)
+    u[:,ACTIVE[0]] ^= np.repeat(np.arange(256,dtype=np.uint8),256)
+    u[:,ACTIVE[1]] ^= np.tile(np.arange(256,dtype=np.uint8),256)
     p=Finv(u)
     if not np.array_equal(F(p),u): raise AssertionError('Exact P4 inverse failed')
     if np.any(p[:,[i for i in range(32) if i not in I_WEAK]]):
         raise AssertionError('Unexpected nonzero plaintext bytes outside I_WEAK')
+    # Independently evaluate Appendix B.3's exact byte formula.
+    x = np.repeat(np.arange(256, dtype=np.uint8), 256)
+    y = np.tile(np.arange(256, dtype=np.uint8), 256)
+    expected = np.zeros_like(p)
+    for r in range(8):
+        c = (-int(SHIFT[r])) % 4
+        b = 8*c+r
+        expected[:,b] = INV_SBOX[r%4, SBOX[r%4,0] ^ GF[IMDS[r,6],x] ^ GF[IMDS[r,7],y]]
+        if not np.all(np.bincount(p[:,b], minlength=256)==256):
+            raise AssertionError('Inverse-defined All property failed')
+    if not np.array_equal(p,expected) or np.any(p[0]):
+        raise AssertionError('Appendix B.3 exact byte formula failed')
+    if tuple(np.flatnonzero(np.any(p!=p[0],axis=0))) != I_WEAK:
+        raise AssertionError('Inverse support mismatch')
     if not np.all(p[:,OFFSET_BYTE]==0):
         raise AssertionError('Incorrect safe offset index')
     p.flags.writeable=False
@@ -250,7 +267,7 @@ def p4_base():
 def plaintext_structures(rng):
     """Two disjoint, FULL 2^16 structures with safe upper-column offset.
 
-    The second one is P4(x,y) xor a*e28, a != 0, in a byte strictly
+    The second one is P4(x,y) xor a*e2, a != 0, in a byte strictly
     ABOVE variable support within its column. Under the weak Kpw condition,
     any resulting carries remain independent of x,y.
     """
@@ -283,7 +300,7 @@ def encrypt5(p,k):
     return (x0,x1,x2,x3,x4),ciphertext
 
 
-def check_complete_product(v,positions=(7,24)):
+def check_complete_product(v,positions=ACTIVE):
     u=v[:,positions[0]].astype(np.uint16)
     w=v[:,positions[1]].astype(np.uint16)
     return bool(np.all(np.bincount(u.astype(np.int32)*256+w.astype(np.int32),minlength=N)==1))
@@ -297,10 +314,12 @@ def check_distinguishers(ps,k,offset):
     if not np.all(k[0,list(I_WEAK)]==0): raise AssertionError('Missing zero Kpw restrictions')
     for r in (1,3,5):
         if not np.array_equal(k[r],odd_from_even(k[r-1])):
-            raise AssertionError(f'Invalid genuine odd/even rotation K{r}')
+            raise AssertionError(f'Invalid odd/even rotation K{r}')
     if not np.array_equal(ps[1][:,OFFSET_BYTE],np.full(N,offset,dtype=np.uint8)):
         raise AssertionError('Second multiset offset not constant')
     if not np.all(ps[0][:,OFFSET_BYTE]==0): raise AssertionError('Bad first offset')
+    if offset == 0 or not np.array_equal(np.delete(ps[0],OFFSET_BYTE,axis=1), np.delete(ps[1],OFFSET_BYTE,axis=1)):
+        raise AssertionError('Invalid disjoint translated multiset')
     results=[]
     for i,p in enumerate(ps):
         if p.shape!=(N,32): raise AssertionError('Must use all 2^16 plaintexts')
@@ -321,7 +340,16 @@ def check_distinguishers(ps,k,offset):
         if not np.all(delta==delta[0]): raise AssertionError('Variable carry from pre-whitening')
         if not np.all(delta[:,list(I_WEAK)]==0):
             raise AssertionError('Weak subkey modified a variable plaintext byte')
-        # First round returns exactly a full product on (7,24).
+        # h = x0 xor base is constant and supported outside I_WEAK.
+        h = x0 ^ p4_base()
+        if not np.all(h == h[0]) or np.any(h[:,list(I_WEAK)]):
+            raise AssertionError('Disjoint-support identity hypotheses failed')
+        expected_x1 = np.broadcast_to(F(h[0]) ^ k[1], (N,32)).copy()
+        expected_x1[:,6] ^= np.repeat(np.arange(256,dtype=np.uint8),256)
+        expected_x1[:,7] ^= np.tile(np.arange(256,dtype=np.uint8),256)
+        if not np.array_equal(x1,expected_x1):
+            raise AssertionError('Exact first-round identity failed')
+        # First round returns exactly a full product on (6,7).
         reduced=x1.copy()
         reduced[:,list(ACTIVE)]=0
         if not np.all(reduced==reduced[0]):
@@ -335,8 +363,10 @@ def check_distinguishers(ps,k,offset):
         for b in range(24,32):
             if not np.all(np.bincount(x2[:,b],minlength=256)==256):
                 raise AssertionError('X2 All byte failed')
-        if not check_complete_product(x2,(24,31)):
-            raise AssertionError('X2 pairwise MDS uniformity failed')
+        for b in range(24,32):
+            for d in range(b+1,32):
+                if not check_complete_product(x2,(b,d)):
+                    raise AssertionError(('X2 pairwise MDS uniformity failed',b,d))
         # Third round individually All across the entire 256-bit state.
         for b in range(32):
             if not np.all(np.bincount(x3[:,b],minlength=256)==256):
@@ -416,7 +446,7 @@ def run_trial(trial,seed,random_wrong,single_bit_wrong,msb_differences,full_msb_
         sampled_survivors.append(survived)
         for s in survived:wrong_survivors.append(dict(trial=trial,column=j,guess=bytes(s).hex(),true_k5_column=kc.tobytes().hex()))
     # Algorithm 2: R=5 is odd, K4 is the inverse of the official byte-rotation
-    # applied to K5. Verify that the surviving genuine full tuple derives K4.
+    # applied to K5. Verify that the retained correct full tuple derives K4.
     full_k5=np.concatenate(true_cols)
     reconstructed_k4=even_from_odd(full_k5)
     if not np.array_equal(full_k5,k[5]) or not np.array_equal(reconstructed_k4,k[4]):
@@ -445,10 +475,10 @@ def run_trial(trial,seed,random_wrong,single_bit_wrong,msb_differences,full_msb_
         wrong_pass_first=wrong_first,
         wrong_survive_both=wrong_both,
         nonweak_control_balanced_both=nonweak_balance,
-        second_structure_offset_byte28=offset,
+        second_structure_offset_byte2=offset,
         exhaustive_msb_differences=exhaustive_msb,
-        key_model='synthetic_weak_Kpw_16_zero_rotated_odd_internal_keys',
-        real_master_key=None,weak_subkey_fraction='2^-128',
+        key_model='synthetic_weak_Kpw_8_zero_rotated_odd_round_keys',
+        real_master_key=None,weak_subkey_fraction='2^-64',
         weak_Kpw_positions=list(I_WEAK),
         plaintexts_per_multiset=N,chosen_plaintexts=DATA)
     vectors=None
@@ -460,8 +490,8 @@ def run_trial(trial,seed,random_wrong,single_bit_wrong,msb_differences,full_msb_
             terminal_K5=k[5].tobytes().hex(),
             derived_K4=reconstructed_k4.tobytes().hex(),
             inverse_shiftrows_sets=I_SETS,
-            plaintext_definition='P4(x,y)=F^-1(F(0) xor x e7 xor y e24)',
-            safe_offset_byte=28,safe_offset_value=offset,multisets=[])
+            plaintext_definition='P4(x,y)=F^-1(F(0) xor x e6 xor y e7)',
+            safe_offset_byte=OFFSET_BYTE,safe_offset_value=offset,multisets=[])
         for p,(states,ct,preimage) in zip(ps,result):
             x0,x1,x2,x3,x4=states
             vectors['multisets'].append(dict(
@@ -492,7 +522,7 @@ def main():
     parser.add_argument('--full-msb-trials',type=int,default=5)
     parser.add_argument('--nonweak-controls',type=int,default=100)
     parser.add_argument('--progress-every',type=int,default=25)
-    parser.add_argument('--out',default='KALYNA256_256_R5_RESULTS')
+    parser.add_argument('--out',default='KALYNA256_256_R5_ACTIVE67_RESULTS')
     parser.add_argument('--resume',action='store_true')
     args=parser.parse_args()
     if not 1<=args.trials<=1000000 or args.jobs<1 or args.progress_every<1 or any(getattr(args,n)<0 for n in ('random_wrong','single_bit_wrong','msb_differences','full_msb_trials','nonweak_controls')):
@@ -522,9 +552,9 @@ def main():
     pending=[i for i in range(args.trials) if i not in completed]
     print('Kalyna-256/256: 4R weak-key integral -> 5R Algorithm 2 column filtering',flush=True)
     print('Official full-14R 256/256 encryption/decryption KAT: PASS',flush=True)
-    print('Exact P4=F^-1(F0 xor x e7 xor y e24), two complete 2^16 plaintext multisets',flush=True)
-    print('16 zero Kpw byte positions:',I_WEAK,flush=True)
-    print('Admissible weak Kpw fraction 2^-128; synthetic subkeys; NOT genuine master keys',flush=True)
+    print('Exact P4=F^-1(F0 xor x e6 xor y e7), two complete 2^16 plaintext multisets',flush=True)
+    print('8 zero Kpw byte positions:',I_WEAK,flush=True)
+    print('Admissible weak Kpw fraction 2^-64; synthetic subkeys; NOT genuine master keys',flush=True)
     print('Terminal K5: modulo addition; K4=EvenFromOdd(K5) for Algorithm 2',flush=True)
     print('Inverse ShiftRows column index sets:',I_SETS,flush=True)
     print(f'Completed {len(completed)}, remaining {len(pending)}',flush=True)
@@ -561,15 +591,16 @@ def main():
         'distinguisher_passed','correct_K5_columns_retained','algorithm2_K4_rotation_verified',
         'wrong_K5_columns_tested','wrong_pass_first','wrong_survive_both',
         'sampled_full_K5_tuples_survived','nonweak_control_balanced_both',
-        'second_structure_offset_byte28','exhaustive_msb_differences']
+        'second_structure_offset_byte2','exhaustive_msb_differences']
     with (out/'trial_summary.csv').open('w',newline='') as f:
         wr=csv.DictWriter(f,fieldnames=cols);wr.writeheader()
         for row in ordered:wr.writerow({k:row.get(k) for k in cols})
     controls=[r['nonweak_control_balanced_both'] for r in ordered if r['nonweak_control_balanced_both'] is not None]
     summary=dict(trials=args.trials,distinguishers_passed=sum(r['distinguisher_passed'] for r in ordered),
         valid_multisets=2*args.trials,plaintexts_per_multiset=N,chosen_plaintexts=DATA,
-        balanced_bytes_per_multiset=32,weak_kpw_positions=list(I_WEAK),
-        admissible_subkey_fraction='2^-128',admissible_subkeys='2^128',
+        balanced_bytes_per_multiset=32,active_positions=list(ACTIVE),weak_kpw_positions=list(I_WEAK),
+        safe_offset_byte=OFFSET_BYTE,
+        admissible_subkey_fraction='2^-64',admissible_subkeys='2^192',
         correct_K5_columns_retained=sum(r['correct_K5_columns_retained'] for r in ordered),
         correct_K5_columns_expected=4*args.trials,
         K4_derived_by_rotation_on_all_trials=all(r['algorithm2_K4_rotation_verified'] for r in ordered),
@@ -590,12 +621,14 @@ def main():
 ## Exact assumptions and referee scope
 Updated Table 2 (Kalyna-256/256, R=5): 2^17 chosen texts, nominal
 2^83 **64-bit column partial-decryption operations**, Algorithm 2,
-weak pre-whitening subkey fraction 2^-128. The two multisets use
-P4(x,y)=F^-1(F(0) xor x*e7 xor y*e24), plus a nonzero byte-28
-translation that is ABOVE the variable positions in the fourth column.
-The active-dependent preimage supports are I_X={0,1,14,15,20,21,26,27}
-and I_Y={6,7,12,13,18,19,24,25}. The 16 key bytes at their union
-must be zero, and ALL remaining pre-whitening bytes are unrestricted.
+weak pre-whitening subkey fraction 2^-64. The two multisets use
+P4(x,y)=F^-1(F(0) xor x*e6 xor y*e7), plus a nonzero byte-2
+translation above the variable positions 0 and 1 in the first column.
+The exact common inverse support is I={0,1,14,15,20,21,26,27}.
+The eight key bytes in I are fixed to zero (a sufficient condition),
+leaving 2^192 admissible pre-whitening subkeys. All remaining bytes
+are unrestricted. For the second multiset, carries from the offset
+can affect only constant bytes; the variable bytes are unchanged.
 These are restrictions on the subkey, NOT proven conditions on master keys.
 Odd/even rotation identities K1=Rot(K0), K3=Rot(K2), K5=Rot(K4) are
 employed. For the odd terminal round R=5, Algorithm 2 gives
@@ -605,7 +638,9 @@ The 4-round integral is checked at INTERNAL X4 (before terminal modular
 addition). The 5R ciphertexts are generated using
 C=F(X4) boxplus K5, and the filter uses full 64-bit modular subtraction
 and bytewise inverse-S-box sums in each inverse-SR column index set.
-The correct complete K5 -> K4 rotation is verified pointwise.
+The correct complete K5 -> K4 rotation is verified.
+All 28 X2 output pairs are tested for joint uniformity; Appendix B.3
+byte formula and exact first-round identities are checked pointwise.
 Candidate filtering is NOT exhaustive and cannot establish key uniqueness
 in the full 2^256 terminal keyspace. This program does not derive the
 master key or calculate a full-encryption-equivalent runtime.
